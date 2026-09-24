@@ -1,11 +1,14 @@
-import imagen from '../../atoms/Imagenes/Imagenes';
-import title from '../../atoms/Title/Title';
+import React from 'react';
 
-const Presentacion = ({logo, titulo}) => (
+import Imagen from '../Atoms/Imagen'; 
+import Title from '../Atoms/Title';
 
-    <div className="presentacion">
-      <imagen src={logo} alt="Logotipo" className ="logo" />
-      <title text={titulo} level={1} />
-    </div>
-  );
-  export default Presentacion;
+const Presentacion = ({ logo, titulo }) => (
+
+  <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 text-center">
+    <Imagen src={logo} alt="Logotipo de la empresa" />
+    <Title text={titulo} level={1} />
+  </div>
+);
+
+export default Presentacion;
