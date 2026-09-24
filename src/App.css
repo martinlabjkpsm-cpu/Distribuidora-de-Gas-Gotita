@@ -1,3 +1,5 @@
+
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -181,4 +183,10 @@
     right: 0;
     border-right-color: var(--border);
   }
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  border-radius: 50%;
 }
