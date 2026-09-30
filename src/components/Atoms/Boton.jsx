@@ -1,13 +1,25 @@
-function Boton({ texto, variante = "primary", type = "button", className = "", onClick }) {
+import React from 'react';
+
+export const Boton = ({ 
+  children, 
+  type = 'button', 
+  variant = 'primary', 
+  fullWidth = false, 
+  disabled = false, 
+  onClick, 
+  className = '' 
+}) => {
+  const variantClass = disabled || variant === 'disabled' ? 'btn-disabled' : `btn-${variant}`;
+  const widthClass = fullWidth ? 'btn-full' : '';
+
   return (
     <button
-     type={type}
-      className={`btn btn-${variante} ${className}`}
+      type={type}
+      disabled={disabled}
       onClick={onClick}
+      className={`${variantClass} ${widthClass} ${className}`.trim()}
     >
-      {texto}
+      {children}
     </button>
   );
-}
-
-export default Boton;
+};
