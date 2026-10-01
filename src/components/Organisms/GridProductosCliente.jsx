@@ -1,0 +1,23 @@
+import { Title } from '../atoms/Title';
+import { TarjetaProducto } from '../molecules/TarjetaProducto';
+
+export const GridProductosCliente = ({ tituloSeccion, productos = [], cantidades = {}, onCantidadChange }) => {
+  return (
+    <section className="seccion-catalogo">
+      <Title level={2}>{tituloSeccion}</Title>
+      <div className="grid-productos">
+        {productos.map((prod) => (
+          <TarjetaProducto
+            key={prod.id}
+            id={prod.id}
+            nombre={prod.nombre}
+            imagenSrc={prod.imagenSrc}
+            precio={prod.precio}
+            cantidad={cantidades[prod.id] || 0}
+            onCantidadChange={onCantidadChange}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
