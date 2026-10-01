@@ -1,7 +1,7 @@
 import React from 'react';
-import { Title } from '../atoms/Title';
-import { IndicadorConexion } from '../molecules/IndicadorConexion';
-import { TarjetaPedidoRepartidor } from '../molecules/TarjetaPedidoRepartidor';
+import { Title } from '../Atoms/Title';
+import { IndicadorConexion } from '../Molecules/IndicadorConexion';
+import { TarjetaPedidoRepartidor } from '../Molecules/TarjetaPedidoRepartidor';
 
 export const ListaPedidosRepartidor = ({
   repartidorNombre,

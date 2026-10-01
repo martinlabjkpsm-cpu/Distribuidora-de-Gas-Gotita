@@ -1,7 +1,7 @@
 import React from 'react';
-import { Title } from '../atoms/Title';
-import { Etiqueta } from '../atoms/Etiqueta';
-import { Boton } from '../atoms/Boton';
+import { Title } from '../Atoms/Title';
+import { Etiqueta } from '../Atoms/Etiqueta';
+import { Boton } from '../Atoms/Boton';
 
 export const TablaUsuariosAdmin = ({ usuarios = [], onEditar, onDesactivar }) => {
   return (

@@ -1,5 +1,5 @@
-import { Title } from '../atoms/Title';
-import { FilaPedidoTabla } from '../molecules/FilaPedidoTabla';
+import { Title } from '../Atoms/Title';
+import { FilaPedidoTabla } from '../Molecules/FilaPedidoTabla';
 
 export const TablaDespachoOperador = ({
     pedidos = [],

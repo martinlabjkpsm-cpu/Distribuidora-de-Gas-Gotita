@@ -1,11 +1,5 @@
-const Imagen = ({ src, alt = "Imagen", className = "logo" }) => {
-  return (
-    <img 
-      src={src} 
-      alt={alt} 
-      className={className} 
-    />
-  );
-};
+import React from 'react';
 
-export default Imagen;
+export const Imagen = ({ src, alt, className = '' }) => {
+  return <img src={src} alt={alt} className={className} />;
+};

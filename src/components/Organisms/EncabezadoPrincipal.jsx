@@ -1,20 +1,26 @@
+import { Title } from '../Atoms/Title';
+import { Imagen } from '../Atoms/Imagen'; 
+import { LinkNav } from '../Atoms/LinkNav';
 
-import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+export const EncabezadoPrincipal = ({
+  titulo,
+  showNav = true,
+  linkHref = 'Login.html',
+  linkTexto = 'Cerrar Sesión'
+}) => {
+  return (
+    <header className="encabezado-principal">
+      <div className="logo-contenedor">
+        <Imagen src="img/logoGotita.png" alt="Distribuidora Gas El Volcán" className="logo-img" />
+        <Title level={1}>{titulo}</Title>
+      </div>
+      {showNav && (
+        <nav className="nav-encabezado">
+          <LinkNav href={linkHref}>{linkTexto}</LinkNav>
+        </nav>
+      )}
+    </header>
+  );
+};
 
-import Presentacion from '../Molecules/Presentacion'; 
-
-const Encabezado = ({ logo, titulo }) => (
-
-  <header className="bg-light py-3 border-bottom shadow-sm">
-    <Container>
-      <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
-          <Presentacion logo={logo} titulo={titulo} />
-        </Col>
-      </Row>
-    </Container>
-  </header>
-);
-
-export default Encabezado;
+export default EncabezadoPrincipal;

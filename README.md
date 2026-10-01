@@ -21,10 +21,15 @@ src/
 │   ├── organisms/
 │   └── templates/
 └── pages/
+└── data/
+└── services/
+└── context/
+└── utils/
 
 ## Tecnologías
 - React + Vite
 - React Bootstrap
+- React router down
 
 ## Cómo ejecutar el proyecto
 npm install

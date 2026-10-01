@@ -1,8 +1,8 @@
 import React from 'react';
-import { Title } from '../atoms/Title';
-import { Boton } from '../atoms/Boton';
-import { LinkNav } from '../atoms/LinkNav';
-import { CampoFormulario } from '../molecules/CampoFormulario';
+import { Title } from '../Atoms/Title';
+import { Boton } from '../Atoms/Boton';
+import { LinkNav } from '../Atoms/LinkNav';
+import { CampoFormulario } from '../Molecules/CampoFormulario';
 
 export const FormularioLogin = ({ formData = {}, onChange, onSubmit }) => {
   return (

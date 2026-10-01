@@ -1,7 +1,7 @@
 import React from 'react';
-import { Title } from '../atoms/Title';
-import { Boton } from '../atoms/Boton';
-import { CampoFormulario } from '../molecules/CampoFormulario';
+import { Title } from '../Atoms/Title';
+import { Boton } from '../Atoms/Boton';
+import { CampoFormulario } from '../Molecules/CampoFormulario';
 
 export const FormularioUsuarioAdmin = ({ formData = {}, onChange, onSubmit, esEdicion = false }) => {
   const opcionesRoles = [
