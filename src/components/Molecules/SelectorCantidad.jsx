@@ -1,45 +1,36 @@
 import React from 'react';
+import { Boton, Input } from '../Atoms';
 
-import { Boton } from '../Atoms/Boton';
-import { Input } from '../Atoms/Input';
+export const SelectorCantidad = ({ id, name, cantidad = 0, onChange, min = 0, max = 20 }) => {
+  const valor = Number(cantidad) || 0;
+  const campo = name || id;
 
-export const SelectorCantidad = ({
-  id,
-  name,
-  cantidad = 0,
-  onChange,
-  min = 0,
-  max = 20
-}) => {
-  const decrementar = () => {
-    if (cantidad > min) {
-      onChange({ target: { name: name || id, value: cantidad - 1 } });
-    }
-  };
-
-  const incrementar = () => {
-    if (cantidad < max) {
-      onChange({ target: { name: name || id, value: cantidad + 1 } });
-    }
-  };
+  const cambiarA = (nuevo) => onChange({ target: { name: campo, value: nuevo } });
 
   return (
-    <div className="selector-cantidad d-flex align-items-center justify-content-center gap-2 my-2">
-      <Boton variant="secondary" onClick={decrementar} disabled={cantidad <= min}>
+    <div className="selector-cantidad">
+      <Boton
+        variant="secondary"
+        onClick={() => cambiarA(valor - 1)}
+        disabled={valor <= min}
+      >
         -
       </Boton>
       <Input
         id={id}
-        name={name || id}
+        name={campo}
         type="number"
-        value={cantidad}
+        value={valor}
         onChange={onChange}
         min={min}
         max={max}
-        className="input-cantidad text-center"
-        style={{ width: '60px' }}
+        className="form-control input-cantidad"
       />
-      <Boton variant="secondary" onClick={incrementar} disabled={cantidad >= max}>
+      <Boton
+        variant="secondary"
+        onClick={() => cambiarA(valor + 1)}
+        disabled={valor >= max}
+      >
         +
       </Boton>
     </div>

@@ -1,0 +1,9 @@
+export { Boton } from './Boton';
+export { Etiqueta } from './Etiqueta';
+export { Imagen } from './Imagen';
+export { Input } from './Input';
+export { Label } from './Label';
+export { LinkNav } from './LinkNav';
+export { Select } from './Select';
+export { Textarea } from './Textarea';
+export { Title } from './Title';

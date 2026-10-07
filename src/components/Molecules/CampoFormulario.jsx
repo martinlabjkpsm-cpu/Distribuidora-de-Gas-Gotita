@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label, Input, Select, Textarea } from '../atoms';
+import { Label, Input, Select, Textarea } from '../Atoms';
 
 export const CampoFormulario = ({
   id,
@@ -10,8 +10,8 @@ export const CampoFormulario = ({
   onChange,
   placeholder = '',
   required = false,
-  options = [], // Si se pasa array de opciones, renderiza un Select
-  rows,        // Si se define, renderiza un Textarea
+  options = [], 
+  rows,        
   className = ''
 }) => {
   return (

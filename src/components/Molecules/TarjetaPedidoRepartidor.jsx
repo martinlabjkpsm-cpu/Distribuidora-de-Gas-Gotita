@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Etiqueta, Select, Boton } from '../atoms';
+import { Title, Etiqueta, Select, Boton } from '../Atoms';
 
 export const TarjetaPedidoRepartidor = ({
   pedido,

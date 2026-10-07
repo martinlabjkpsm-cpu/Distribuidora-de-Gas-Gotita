@@ -1,5 +1,5 @@
 import React from 'react';
-import { Etiqueta, Select, Boton } from '../atoms';
+import { Etiqueta, Select, Boton } from '../Atoms';
 
 export const FilaPedidoTabla = ({
   pedido,

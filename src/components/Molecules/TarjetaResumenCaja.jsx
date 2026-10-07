@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title } from '../atoms';
+import { Title } from '../Atoms';
 
 export const TarjetaResumenCaja = ({ titulo, monto, variante = 'normal' }) => {
   return (
