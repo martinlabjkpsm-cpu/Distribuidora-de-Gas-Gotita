@@ -1,0 +1,159 @@
+{
+"Productos y Tarifas":[
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "Catálogo de Productos y Tarifas – Forma C"
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "Código",
+  "Column2": "Categoría",
+  "Column3": "Producto",
+  "Column4": "Descripción",
+  "Column5": "Unidad",
+  "Column6": "Precio residencial (CLP)",
+  "Column7": "Precio comercial (CLP)",
+  "Column8": "Stock actual"
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "CL001",
+  "Column2": "Cilindros de Gas",
+  "Column3": "Cilindro GLP 5 kg",
+  "Column4": "Cilindro de gas licuado de petróleo 5 kg. Para uso residencial (cocina, calefacción pequeña).",
+  "Column5": "Unidad",
+  "Column6": 6500,
+  "Column7": 6000,
+  "Column8": 80
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "CL002",
+  "Column2": "Cilindros de Gas",
+  "Column3": "Cilindro GLP 11 kg",
+  "Column4": "Cilindro estándar doméstico. El más utilizado en hogares chilenos. Compatible con reguladores estándar.",
+  "Column5": "Unidad",
+  "Column6": 12000,
+  "Column7": 11000,
+  "Column8": 200
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "CL003",
+  "Column2": "Cilindros de Gas",
+  "Column3": "Cilindro GLP 15 kg",
+  "Column4": "Cilindro de mayor capacidad para hogares de alto consumo o locales pequeños.",
+  "Column5": "Unidad",
+  "Column6": 16000,
+  "Column7": 14500,
+  "Column8": 90
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "CL004",
+  "Column2": "Cilindros de Gas",
+  "Column3": "Cilindro GLP 45 kg",
+  "Column4": "Cilindro industrial. Uso comercial: restaurantes, talleres, calefacción de locales.",
+  "Column5": "Unidad",
+  "Column6": 45000,
+  "Column7": 40000,
+  "Column8": 30
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "RG001",
+  "Column2": "Reguladores",
+  "Column3": "Regulador doméstico estándar",
+  "Column4": "Regulador de 1 etapa para cilindros 5, 11 y 15 kg. Presión de salida 28 mbar.",
+  "Column5": "Unidad",
+  "Column6": 8990,
+  "Column7": 8200,
+  "Column8": 45
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "RG002",
+  "Column2": "Reguladores",
+  "Column3": "Regulador de alta presión",
+  "Column4": "Regulador para cocinas industriales o equipos de mayor consumo. Presión regulable.",
+  "Column5": "Unidad",
+  "Column6": 18990,
+  "Column7": 17000,
+  "Column8": 12
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "RG003",
+  "Column2": "Reguladores",
+  "Column3": "Regulador dual (2 salidas)",
+  "Column4": "Permite conectar dos artefactos simultáneamente al mismo cilindro.",
+  "Column5": "Unidad",
+  "Column6": 14990,
+  "Column7": 13500,
+  "Column8": 18
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "MG001",
+  "Column2": "Mangueras y Conexiones",
+  "Column3": "Manguera gas 1.5 m",
+  "Column4": "Manguera flexible homologada. Diámetro interior 9mm. Compatible con reguladores estándar.",
+  "Column5": "Unidad",
+  "Column6": 3990,
+  "Column7": 3500,
+  "Column8": 80
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "MG002",
+  "Column2": "Mangueras y Conexiones",
+  "Column3": "Manguera gas 3 m",
+  "Column4": "Manguera larga para instalaciones donde el artefacto está alejado del cilindro.",
+  "Column5": "Unidad",
+  "Column6": 6990,
+  "Column7": 6200,
+  "Column8": 50
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "MG003",
+  "Column2": "Mangueras y Conexiones",
+  "Column3": "Abrazadera metálica",
+  "Column4": "Abrazadera de acero para asegurar la conexión manguera-regulador y manguera-artefacto.",
+  "Column5": "Unidad",
+  "Column6": 990,
+  "Column7": 800,
+  "Column8": 200
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "MG004",
+  "Column2": "Mangueras y Conexiones",
+  "Column3": "Kit conexión completo (regulador + manguera 1.5m + abrazaderas)",
+  "Column4": "Todo lo necesario para instalar un cilindro nuevo.",
+  "Column5": "Kit",
+  "Column6": 12990,
+  "Column7": 11500,
+  "Column8": 25
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "AC001",
+  "Column2": "Accesorios",
+  "Column3": "Carro porta cilindro 11/15 kg",
+  "Column4": "Carro metálico con ruedas para transportar cilindros dentro del hogar con seguridad.",
+  "Column5": "Unidad",
+  "Column6": 12990,
+  "Column7": 11000,
+  "Column8": 20
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "AC002",
+  "Column2": "Accesorios",
+  "Column3": "Tapa protectora para válvula",
+  "Column4": "Tapa de plástico ABS para proteger la válvula del cilindro durante el transporte.",
+  "Column5": "Unidad",
+  "Column6": 1490,
+  "Column7": 1200,
+  "Column8": 60
+ },
+ {
+  "DISTRIBUIDORA DE GAS EL VOLCÁN": "AC003",
+  "Column2": "Accesorios",
+  "Column3": "Detector de gas a batería",
+  "Column4": "Sensor electroquímico. Alarma sonora y visual ante fuga de gas GLP o metano.",
+  "Column5": "Unidad",
+  "Column6": 19990,
+  "Column7": 17000,
+  "Column8": 8
+ }
+]
+
+
+}
