@@ -1,7 +1,6 @@
 import React from 'react';
-import { DashboardLayoutTemplate } from '../Templates/DashboardLayoutTemplate';
-import { ListaPedidosRepartidor } from '../Organisms/ListaPedidosRepartidor';
-
+import { DashboardLayoutTemplate } from "../components/Templates/DashboardLayoutTemplate";
+import { ListaPedidosRepartidor } from "../components/Organisms/ListaPedidosRepartidor";
 export const RepartidorPage = ({
   repartidorNombre,
   camionUnidad,

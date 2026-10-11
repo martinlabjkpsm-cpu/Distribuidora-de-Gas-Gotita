@@ -1,23 +1,22 @@
 import React from 'react';
-import { AuthLayoutTemplate } from '../Templates/AuthLayoutTemplate';
-import { FormularioLogin } from '../Organisms/FormularioLogin';
+import { AuthLayoutTemplate } from '../components/Templates/AuthLayoutTemplate';
+import { FormularioLogin } from '../components/Organisms/FormularioLogin';
 
-export const LoginPage = ({ formData, onChange, onSubmit }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+export const LoginPage = ({ onLogin }) => {
+  const handleLoginSubmit = (datosFormulario) => {
+    console.log('Datos de inicio de sesión capturados:', datosFormulario);
 
-    if (onSubmit) {
-      onSubmit(e);
+    // Si la página recibe la función onLogin desde las rutas o estado global
+    if (onLogin) {
+      onLogin(datosFormulario);
     }
   };
 
   return (
-    <AuthLayoutTemplate tituloHeader="Gas Gotita - Acceso al Sistema">
-      <FormularioLogin
-        formData={formData}
-        onChange={onChange}
-        onSubmit={handleSubmit}
-      />
+    <AuthLayoutTemplate tituloHeader="Gas Gotita - Iniciar Sesión">
+      <FormularioLogin onSubmit={handleLoginSubmit} />
     </AuthLayoutTemplate>
   );
 };
+
+export default LoginPage;

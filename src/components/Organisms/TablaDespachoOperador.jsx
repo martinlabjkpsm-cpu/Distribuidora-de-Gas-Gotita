@@ -1,3 +1,4 @@
+import React from 'react';
 import { Title } from '../Atoms/Title';
 import { FilaPedidoTabla } from '../Molecules/FilaPedidoTabla';
 

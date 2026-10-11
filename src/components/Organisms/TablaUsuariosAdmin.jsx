@@ -3,6 +3,7 @@ import { Title } from '../Atoms/Title';
 import { Etiqueta } from '../Atoms/Etiqueta';
 import { Boton } from '../Atoms/Boton';
 
+
 export const TablaUsuariosAdmin = ({ usuarios = [], onEditar, onDesactivar }) => {
   return (
     <section className="organismo-tabla-usuarios">

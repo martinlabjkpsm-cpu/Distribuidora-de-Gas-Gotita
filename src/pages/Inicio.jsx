@@ -1,34 +1,32 @@
-
-
-// Importaciones con rutas y nombres exactos
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Title } from '../components/Atoms/Title';
 import { Imagen } from '../components/Atoms/Imagen';
-import { LinkNav } from '../components/Atoms/LinkNav';
 import { Boton } from '../components/Atoms/Boton';
 import { EncabezadoPrincipal } from '../components/Organisms/EncabezadoPrincipal';
+import { Footer } from '../components/Organisms/Footer';
 
 export const Inicio = () => {
+  const navigate = useNavigate();
+
   const cilindrosDestacados = [
     {
       id: '5kg',
       nombre: 'Cilindro 5 KG',
       imagenSrc: 'img/gas5kg.jpeg',
-      descripcion:
-        'Excelente para camping, laboratorios, estufas portátiles o consumos individuales ligeros.',
+      descripcion: 'Excelente para camping, laboratorios, estufas portátiles o consumos individuales ligeros.',
     },
     {
       id: '11kg',
       nombre: 'Cilindro 11 KG',
       imagenSrc: 'img/gas11kg.jpeg',
-      descripcion:
-        'El formato preferido por las familias de Chillán para la cocina del día a día y el agua caliente.',
+      descripcion: 'El formato preferido por las familias de Chillán para la cocina del día a día y el agua caliente.',
     },
     {
       id: '15kg',
       nombre: 'Cilindro 15 KG',
       imagenSrc: 'img/gas15kg.jpeg',
-      descripcion:
-        'Ideal para sistemas de calefacción, hogares de alto consumo o locales comerciales de comida.',
+      descripcion: 'Ideal para sistemas de calefacción, hogares de alto consumo o locales comerciales de comida.',
     },
     {
       id: '45kg',
@@ -42,36 +40,32 @@ export const Inicio = () => {
     {
       numero: '1',
       titulo: 'Crea tu cuenta o Inicia Sesión',
-      descripcion:
-        'Para proteger la privacidad de tus datos de despacho, el primer paso es registrarte como cliente o ingresar con tus credenciales seguras.',
+      descripcion: 'Para proteger la privacidad de tus datos de despacho, el primer paso es registrarte como cliente o ingresar con tus credenciales seguras.',
     },
     {
       numero: '2',
       titulo: 'Configura tu pedido en segundos',
-      descripcion:
-        'Ingresa tu dirección de entrega en Chillán y selecciona el formato de cilindro que necesitas (5 kg, 11 kg, 15 kg o 45 kg).',
+      descripcion: 'Ingresa tu dirección de entrega en Chillán y selecciona el formato de cilindro que necesitas (5 kg, 11 kg, 15 kg o 45 kg).',
     },
     {
       numero: '3',
       titulo: 'Sigue tu despacho en tiempo real',
-      descripcion:
-        'A través de nuestro mapa interactivo integrado, podrás ver la ubicación exacta del repartidor en ruta y verificar el estado de tu entrega.',
+      descripcion: 'A través de nuestro mapa interactivo integrado, podrás ver la ubicación exacta del repartidor en ruta y verificar el estado de tu entrega.',
     },
   ];
 
   return (
     <div className="pagina-inicio">
-      {/* Uso de EncabezadoPrincipal idéntico a la importación */}
       <EncabezadoPrincipal
         titulo="Distribuidora de Gas Gotita"
         showNav={true}
-        linkHref="Login.html"
         linkTexto="Inicio de Sesión"
+        rutaDestino="/login"
       />
 
-      <main className="contenido-principal">
-        {/* Sección Historia */}
-        <section className="nosotros">
+      <main className="contenido-principal container py-4">
+        
+        <section className="nosotros mb-5">
           <Title level={2}>¿Quiénes somos?</Title>
           <p>
             <strong>Distribuidora de Gotita</strong> es una empresa familiar fundada en el año{' '}
@@ -81,20 +75,20 @@ export const Inicio = () => {
           </p>
         </section>
 
-        {/* Sección Catálogo */}
-        <section className="productos">
+        
+        <section className="productos mb-5">
           <Title level={2}>Nuestros cilindros</Title>
-          <div className="cilindros-grid">
-            {cilindrosDestacados.map((item) => (
-              <div key={item.id} className="cilindro-card">
-                <Imagen src={item.imagenSrc} alt={item.nombre} className="img-cilindro" />
+          <div className="cilindros-grid d-flex flex-wrap gap-3 mt-3">
+            {cilindrosDestacados['map']((item) => (
+              <div key={item['id']} className="cilindro-card card p-3" style={{ width: '250px' }}>
+                <Imagen src={item.imagenSrc} alt={item.nombre} className="card-img-top img-cilindro" />
                 <Title level={3}>{item.nombre}</Title>
                 <p>{item.descripcion}</p>
               </div>
             ))}
           </div>
 
-          <div className="otros-productos">
+          <div className="otros-productos mt-3">
             <p>
               <strong>Otros productos:</strong> Contamos con una variedad de{' '}
               <strong>Accesorios</strong>, <strong>Mangueras</strong> y{' '}
@@ -104,12 +98,12 @@ export const Inicio = () => {
           </div>
         </section>
 
-        {/* Sección Pasos de Pedido */}
-        <section className="pasos-pedido">
+        
+        <section className="pasos-pedido mb-5">
           <Title level={2}>¿Cómo pedir nuestro Gas?</Title>
-          <div className="pasos-contenedor">
-            {pasosCompra.map((paso) => (
-              <div key={paso.numero} className="paso-card">
+          <div className="pasos-contenedor d-flex flex-wrap gap-3 mt-3">
+            {pasosCompra['map']((paso) => (
+              <div key={paso.numero} className="paso-card border p-3 rounded flex-grow-1">
                 <Title level={3}>
                   {paso.numero}. {paso.titulo}
                 </Title>
@@ -119,25 +113,21 @@ export const Inicio = () => {
           </div>
         </section>
 
-        {/* Llamados a la Acción */}
-        <section className="acciones-inicio">
-          <LinkNav href="Login.html">
-            <Boton variant="primary">Inicia Sesión Aquí</Boton>
-          </LinkNav>
-          <LinkNav href="Registro.html">
-            <Boton variant="secondary">Regístrate Aquí</Boton>
-          </LinkNav>
+        
+        <section className="acciones-inicio d-flex gap-3 justify-content-center">
+          <Boton variant="primary" onClick={() => navigate('/login')}>
+            Inicia Sesión Aquí
+          </Boton>
+          <Boton variant="secondary" onClick={() => navigate('/registro')}>
+            Regístrate Aquí
+          </Boton>
         </section>
       </main>
 
-      <footer className="pie-pagina">
-        <div>
-          <p>
-            &copy; 2026 Distribuidora de Gas Gotita - Chillán, Región de Ñuble. Todos los
-            derechos reservados.
-          </p>
-        </div>
-      </footer>
+      
+      <Footer />
     </div>
   );
 };
+
+export default Inicio;

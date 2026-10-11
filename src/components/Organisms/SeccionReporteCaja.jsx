@@ -1,5 +1,7 @@
+import React from 'react';
 import { Title } from '../Atoms/Title';
 import { TarjetaResumenCaja } from '../Molecules/TarjetaResumenCaja';
+
 
 export const SeccionReporteCaja = ({ reporte = {} }) => {
     const { totalVentas = 0, efectivo = 0, transferencias = 0, debito = 0, estadoCuadre = 'Pendiente' } = reporte;

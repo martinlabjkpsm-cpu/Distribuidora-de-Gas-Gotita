@@ -1,11 +1,12 @@
 import React from 'react';
-import { AuthLayoutTemplate } from '../Templates/AuthLayoutTemplate';
-import { FormularioRegistro } from '../Organisms/FormularioRegistro';
+import { AuthLayoutTemplate } from '../components/Templates/AuthLayoutTemplate';
+import { FormularioRegistro } from '../components/Organisms/FormularioRegistro';
 
 export const RegistroPage = ({ formData, onChange, onSubmit }) => {
   const handleSubmit = (e) => {
-    e.preventDefault();
-
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     if (onSubmit) {
       onSubmit(e);
     }
@@ -21,3 +22,5 @@ export const RegistroPage = ({ formData, onChange, onSubmit }) => {
     </AuthLayoutTemplate>
   );
 };
+
+export default RegistroPage;

@@ -1,18 +1,32 @@
 import React from 'react';
-import { MainLayoutTemplate } from '../Templates/MainLayoutTemplate';
-import { GridProductosCliente } from '../Organisms/GridProductosCliente';
+import { MainLayoutTemplate } from '../components/Templates/MainLayoutTemplate';
+import { GridProductosCliente } from '../components/Organisms/GridProductosCliente';
+import { catalogoGasElVolcan } from '../data/catalogoGasElVolcan';
 
-export const ClientePage = ({
-  tituloSeccion,
-  productos,
-  cantidades,
-  onCantidadChange
-}) => {
+export const ClientePage = ({ cantidades = {}, onCantidadChange, tipoCliente = 'RESIDENCIAL' }) => {
+  // Extraemos la lista original del catálogo
+  const listaOriginal = catalogoGasElVolcan['productosYTarifas'] || [];
+
+  // Mapeamos los productos seleccionando la tarifa según el tipo de cliente sin usar notación de punto en .map
+  const productosParaGrid = listaOriginal['map']((prod) => {
+    const codigo = prod['codigo'];
+    const nombreProducto = prod['producto'];
+    const precioComercial = prod['precioComercial'];
+    const precioResidencial = prod['precioResidencial'];
+
+    return {
+      id: codigo,
+      nombre: nombreProducto,
+      precio: tipoCliente === 'COMERCIAL' ? precioComercial : precioResidencial,
+      imagenSrc: `img/${codigo.toLowerCase()}.jpeg`
+    };
+  });
+
   return (
     <MainLayoutTemplate tituloHeader="Portal de Pedidos - Gas Gotita">
       <GridProductosCliente
-        tituloSeccion={tituloSeccion}
-        productos={productos}
+        tituloSeccion="Catálogo Oficial de Productos"
+        productos={productosParaGrid}
         cantidades={cantidades}
         onCantidadChange={onCantidadChange}
       />
@@ -20,3 +34,4 @@ export const ClientePage = ({
   );
 };
 
+export default ClientePage;

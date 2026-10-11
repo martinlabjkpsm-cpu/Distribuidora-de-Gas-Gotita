@@ -1,6 +1,6 @@
 import React from 'react';
-import { DashboardLayoutTemplate } from '../Templates/DashboardLayoutTemplate';
-import { TablaDespachoOperador } from '../Organisms/TablaDespachoOperador';
+import { DashboardLayoutTemplate } from '../components/Templates/DashboardLayoutTemplate';
+import { TablaDespachoOperador } from '../components/Organisms/TablaDespachoOperador';
 
 export const OperadorPage = ({
   pedidos,
@@ -24,3 +24,4 @@ export const OperadorPage = ({
   );
 };
 
+export default OperadorPage;
