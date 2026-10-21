@@ -52,7 +52,7 @@ export const RepartidorPage = () => {
     .reduce((acc, p) => acc + (p.total || 0), 0);
 
   return (
-    <MainLayoutTemplate tituloHeader={`🚚 App Repartidor - ${usuario?.nombre || 'Chofer'}`}>
+    <MainLayoutTemplate tituloHeader={`Panel Repartidor - Gas Gotita - ${usuario?.nombre || 'Chofer'}`}>
       <div className="container py-2 max-w-lg">
         
       

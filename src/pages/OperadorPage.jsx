@@ -59,7 +59,7 @@ export const OperadorPage = () => {
   const cantEntregados = listaSeguraPedidos.filter((p) => p.estado === 'ENTREGADO').length;
 
   return (
-    <MainLayoutTemplate tituloHeader="Central de Despacho - Operadora">
+    <MainLayoutTemplate tituloHeader="Panel de Operador - Gas Gotita">
       <div className="container-fluid py-3">
         {mensajeNotificacion && (
           <div

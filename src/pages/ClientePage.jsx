@@ -117,7 +117,7 @@ export const ClientePage = () => {
   };
 
   return (
-    <MainLayoutTemplate tituloHeader="Portal de Pedidos - Gas El Volcán">
+    <MainLayoutTemplate tituloHeader="Portal Cliente - Gas Gotita">
       <div className="container-fluid py-2">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <Boton
