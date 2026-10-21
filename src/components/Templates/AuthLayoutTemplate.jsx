@@ -1,28 +1,18 @@
 import React from 'react';
-import { EncabezadoPrincipal } from '../Organisms/EncabezadoPrincipal';
 
-export const AuthLayoutTemplate = ({ tituloHeader, children }) => {
+export const AuthLayoutTemplate = ({ children, titulo, subtitulo }) => {
   return (
-    <div className="layout-autenticacion min-vh-100 d-flex flex-column">
-      <EncabezadoPrincipal
-        titulo={tituloHeader}
-        showNav={false}
-      />
-
-      <main className="contenido-auth flex-grow-1 d-flex justify-content-center align-items-center py-5 bg-light">
-        <div
-          className="tarjeta-auth-wrapper shadow p-4 rounded bg-white"
-          style={{ maxWidth: '420px', width: '100%' }}
-        >
-          {children}
+    <div className="container d-flex justify-content-center align-items-center min-vh-100 py-4">
+      <div className="card shadow-lg p-4 border-0 rounded-4 bg-white w-100 max-w-card">
+        <div className="text-center mb-4">
+          <span className="fs-1">🔥</span>
+          <h1 className="fs-3 fw-bold text-danger m-0">{titulo}</h1>
+          {subtitulo && <p className="text-muted small m-0 mt-1">{subtitulo}</p>}
         </div>
-      </main>
-
-      <footer className="pie-pagina text-center py-3 bg-white border-top">
-        <p className="mb-0 text-muted">
-          &copy; 2026 Distribuidora de Gas Gotita - Chillán, Región de Ñuble.
-        </p>
-      </footer>
+        {children}
+      </div>
     </div>
   );
 };
+
+export default AuthLayoutTemplate;

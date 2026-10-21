@@ -1,101 +1,73 @@
-import React, { useState } from 'react';
-import { Title } from '../Atoms/Title';
-import { Boton } from '../Atoms/Boton';
-import { LinkNav } from '../Atoms/LinkNav';
-import { CampoFormulario } from '../Molecules/CampoFormulario';
-import { validarRut, validarRequerido, validarEmail } from '../../utils/validaciones';
+import React from 'react';
+import { Boton } from '../Atoms';
+import { CampoFormulario } from '../Molecules';
 
-export const FormularioRegistro = ({ onEnviar }) => {
-  const [formData, setFormData] = useState({
-    rut: '',
-    nombre: '',
-    email: '',
-    password: ''
-  });
-
-  const [errores, setErrores] = useState({
-    rut: '',
-    nombre: '',
-    email: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrores({ ...errores, [e.target.name]: '' });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const errorRut = !validarRut(formData.rut) ? 'RUT no válido' : '';
-    const errorNombre = !validarRequerido(formData.nombre) ? 'El nombre es obligatorio' : '';
-    const errorEmail = !validarEmail(formData.email) ? 'Ingrese un correo electrónico válido' : '';
-    const errorPass = !validarRequerido(formData.password) ? 'La contraseña es obligatoria' : '';
-
-    if (errorRut || errorNombre || errorEmail || errorPass) {
-      setErrores({
-        rut: errorRut,
-        nombre: errorNombre,
-        email: errorEmail,
-        password: errorPass
-      });
-    } else if (onEnviar) {
-      onEnviar(formData);
-    }
-  };
-
+export const FormularioRegistro = ({
+  rut,
+  nombre,
+  email,
+  password,
+  onChangeRut,
+  onChangeNombre,
+  onChangeEmail,
+  onChangePassword,
+  onSubmit,
+  error
+}) => {
   return (
-    <section className="contenedor-registro">
-      <Title level={2}>Registro de Nuevo Cliente</Title>
-      <form onSubmit={handleSubmit} className="form-registro" noValidate>
-        <CampoFormulario
-          id="rut"
-          name="rut"
-          label="RUT"
-          placeholder="12345678-9"
-          value={formData.rut}
-          onChange={handleChange}
-          error={errores.rut}
-        />
-        <CampoFormulario
-          id="nombre"
-          name="nombre"
-          label="Nombre Completo"
-          placeholder="Ej: Juan Pérez"
-          value={formData.nombre}
-          onChange={handleChange}
-          error={errores.nombre}
-        />
-        <CampoFormulario
-          id="email"
-          name="email"
-          type="email"
-          label="Correo Electrónico"
-          placeholder="juan@ejemplo.com"
-          value={formData.email}
-          onChange={handleChange}
-          error={errores.email}
-        />
-        <CampoFormulario
-          id="password"
-          name="password"
-          type="password"
-          label="Contraseña"
-          placeholder="••••••••"
-          value={formData.password}
-          onChange={handleChange}
-          error={errores.password}
-        />
-        <Boton type="submit" variant="primary" fullWidth className="mt-3">
-          Crear Cuenta
-        </Boton>
-      </form>
+    <form onSubmit={onSubmit}>
+      {error && <div className="alert alert-danger py-2 small mb-3">{error}</div>}
 
-      <nav className="links-auxiliares mt-3">
-        <LinkNav to="/login">¿Ya tienes cuenta? Inicia sesión</LinkNav>
-      </nav>
-    </section>
+      <CampoFormulario
+        id="reg-rut"
+        name="rut"
+        label="RUT"
+        placeholder="Ej: 12345678-9"
+        value={rut}
+        onChange={onChangeRut}
+        required
+        className="mb-2"
+      />
+
+      <CampoFormulario
+        id="reg-nombre"
+        name="nombre"
+        label="Nombre Completo"
+        placeholder="Ej: Juan Pérez"
+        value={nombre}
+        onChange={onChangeNombre}
+        required
+        className="mb-2"
+      />
+
+      <CampoFormulario
+        id="reg-email"
+        name="email"
+        type="email"
+        label="Correo Electrónico"
+        placeholder="ejemplo@correo.cl"
+        value={email}
+        onChange={onChangeEmail}
+        required
+        className="mb-2"
+      />
+
+      <CampoFormulario
+        id="reg-password"
+        name="password"
+        type="password"
+        label="Contraseña"
+        placeholder="••••••••"
+        value={password}
+        onChange={onChangePassword}
+        required
+        className="mb-3"
+      />
+
+      <Boton type="submit" variant="success" fullWidth className="btn btn-success btn-lg w-100 fw-bold mb-3">
+        Crear Mi Cuenta
+      </Boton>
+    </form>
   );
 };
 

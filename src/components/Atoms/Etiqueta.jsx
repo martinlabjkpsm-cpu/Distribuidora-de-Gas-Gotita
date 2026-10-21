@@ -1,10 +1,12 @@
-export const Etiqueta = ({ variant = 'pendiente', children, className = '' }) => {
+import React from 'react';
 
-  const EtiquetaClass = `etiqueta etiqueta-${variant.toString().toLowerCase()}`;
+export const Etiqueta = ({ variant = 'pendiente', children, className = '' }) => { 
+  const etiquetaClass = `etiqueta etiqueta-${variant.toString().toLowerCase()}`; 
+  return ( 
+    <span className={`${etiquetaClass} ${className}`.trim()}> 
+      {children} 
+    </span> 
+  ); 
+}; 
 
-  return (
-    <span className={`${EtiquetaClass} ${className}`.trim()}>
-      {children}
-    </span>
-  );
-};
+export default Etiqueta;

@@ -1,33 +1,61 @@
 import React from 'react';
-import { Imagen } from '../Atoms/Imagen';
-import { Title } from '../Atoms/Title';
-import { Label } from '../Atoms/Label';
-import { SelectorCantidad } from './SelectorCantidad';
+import { Title, Imagen, Boton } from '../Atoms';
+import { formatearMoneda } from '../../utils/formato';
 
 export const TarjetaProducto = ({
-  id,
-  nombre,
-  imagenSrc,
-  precio,
-  cantidad = 0,
-  onCantidadChange,
+  producto,
+  nombre = producto?.nombre,
+  descripcion = producto?.descripcion,
+  categoria = producto?.categoria,
+  imagenSrc = producto?.imagenSrc,
+  precio = producto?.precioResidencial ?? producto?.precio,
+  etiquetaTarifa = 'RESIDENCIAL',
+  onAgregar
 }) => {
   return (
-    <article className="tarjeta-producto card p-3" style={{ width: '250px' }}>
-      {imagenSrc && <Imagen src={imagenSrc} alt={nombre} className="card-img-top img-producto" />}
-      <div className="card-body text-center">
-        <Title level={4}>{nombre}</Title>
-        <p className="precio-producto fw-bold text-primary">
-          ${precio ? precio.toLocaleString('es-CL') : '0'}
-        </p>
-        <Label htmlFor={id}>Cantidad:</Label>
-        <SelectorCantidad
-          id={id}
-          name={id}
-          cantidad={cantidad}
-          onChange={onCantidadChange}
+    <div className="card h-100 shadow-sm border-0 bg-white">
+      <div className="p-3 text-center bg-light rounded-top">
+        <Imagen
+          src={imagenSrc || '/img/gas5kg.jpeg'}
+          alt={nombre || 'Producto'}
+          className="img-fluid img-cilindro-cat"
         />
       </div>
-    </article>
+
+      <div className="card-body d-flex flex-column p-3">
+        {categoria && (
+          <span className="badge bg-secondary mb-2 align-self-start">
+            {categoria}
+          </span>
+        )}
+
+        <Title level={3} className="fs-5 fw-bold mb-1 text-dark">
+          {nombre}
+        </Title>
+
+        <p className="small text-muted mb-3 flex-grow-1">
+          {descripcion || ''}
+        </p>
+
+        <div className="d-flex justify-content-between align-items-center pt-2 border-top">
+          <div>
+            <small className="text-muted d-block">Precio ({etiquetaTarifa}):</small>
+            <strong className="fs-5 text-success">
+              {formatearMoneda(precio || 0)}
+            </strong>
+          </div>
+
+          <Boton
+            variant="primary"
+            className="btn-sm fw-bold px-3"
+            onClick={onAgregar}
+          >
+            + Agregar
+          </Boton>
+        </div>
+      </div>
+    </div>
   );
 };
+
+export default TarjetaProducto;

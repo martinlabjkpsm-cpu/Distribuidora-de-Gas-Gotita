@@ -6,6 +6,8 @@ export const categorias = [
 ];
 
 export const catalogoGasElVolcan = {
+  zonasDeDespacho: ["Chillán", "Chillán Viejo", "Ñuble"],
+
   productosYTarifas: [
     {
       codigo: "CL001",
@@ -13,9 +15,10 @@ export const catalogoGasElVolcan = {
       producto: "Cilindro GLP 5 kg",
       descripcion: "Cilindro de gas licuado de petróleo 5 kg. Para uso residencial (cocina, calefacción pequeña).",
       unidad: "Unidad",
-      precioResidencial: 6500,
+      precioResidencial: 6500, // Esto hace que falle la prueba 7 (compara 6500 vs 5000)
       precioComercial: 6000,
-      stockActual: 80
+      stockActual: 80,
+      imagenSrc: "/img/gas5kg.jpeg"
     },
     {
       codigo: "CL002",
@@ -25,7 +28,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 12000,
       precioComercial: 11000,
-      stockActual: 200
+      stockActual: 200,
+      imagenSrc: "/img/gas11kg.jpeg"
     },
     {
       codigo: "CL003",
@@ -35,7 +39,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 16000,
       precioComercial: 14500,
-      stockActual: 90
+      stockActual: 90,
+      imagenSrc: "/img/gas15kg.jpeg"
     },
     {
       codigo: "CL004",
@@ -45,7 +50,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 45000,
       precioComercial: 40000,
-      stockActual: 30
+      stockActual: 30,
+      imagenSrc: "/img/gasgotita45.jpeg"
     },
     {
       codigo: "RG001",
@@ -55,7 +61,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 8990,
       precioComercial: 8200,
-      stockActual: 45
+      stockActual: 45,
+      imagenSrc: "/img/regulador-domestico.webp"
     },
     {
       codigo: "RG002",
@@ -65,7 +72,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 18990,
       precioComercial: 17000,
-      stockActual: 12
+      stockActual: 12,
+      imagenSrc: "/img/regulador-altapresion.jpeg"
     },
     {
       codigo: "RG003",
@@ -75,7 +83,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 14990,
       precioComercial: 13500,
-      stockActual: 18
+      stockActual: 18,
+      imagenSrc: "/img/regulador-dual.png"
     },
     {
       codigo: "MG001",
@@ -85,7 +94,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 3990,
       precioComercial: 3500,
-      stockActual: 80
+      stockActual: 80,
+      imagenSrc: "/img/manguera-gas.webp"
     },
     {
       codigo: "MG002",
@@ -95,7 +105,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 6990,
       precioComercial: 6200,
-      stockActual: 50
+      stockActual: 50,
+      imagenSrc: "/img/manguera-gas.webp"
     },
     {
       codigo: "MG003",
@@ -105,7 +116,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 990,
       precioComercial: 800,
-      stockActual: 200
+      stockActual: 200,
+      imagenSrc: "/img/abrazadera-metalica.webp"
     },
     {
       codigo: "MG004",
@@ -115,7 +127,8 @@ export const catalogoGasElVolcan = {
       unidad: "Kit",
       precioResidencial: 12990,
       precioComercial: 11500,
-      stockActual: 25
+      stockActual: 25,
+      imagenSrc: "/img/kit-conexion-completo.webp"
     },
     {
       codigo: "AC001",
@@ -125,7 +138,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 12990,
       precioComercial: 11000,
-      stockActual: 20
+      stockActual: 20,
+      imagenSrc: "/img/carro-gas.png"
     },
     {
       codigo: "AC002",
@@ -135,7 +149,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 1490,
       precioComercial: 1200,
-      stockActual: 60
+      stockActual: 60,
+      imagenSrc: "/img/valvula-gas.jpeg"
     },
     {
       codigo: "AC003",
@@ -145,44 +160,8 @@ export const catalogoGasElVolcan = {
       unidad: "Unidad",
       precioResidencial: 19990,
       precioComercial: 17000,
-      stockActual: 8
-    }
-  ],
-  zonasDeDespacho: [
-    {
-      zona: "Zona Centro",
-      comunasCubiertas: "Chillán (sectores centro, norte y sur)",
-      diasDespacho: "Lunes a Sábado",
-      horario: "08:00 – 20:00",
-      tiempoEstimadoEntrega: "1 – 3 horas"
-    },
-    {
-      zona: "Zona Oriente",
-      comunasCubiertas: "Chillán (sector oriente), Chillán Viejo",
-      diasDespacho: "Lunes a Viernes",
-      horario: "08:00 – 18:00",
-      tiempoEstimadoEntrega: "2 – 4 horas"
-    },
-    {
-      zona: "Zona Rural",
-      comunasCubiertas: "El Carmen, Pinto, San Ignacio",
-      diasDespacho: "Martes y Jueves",
-      horario: "08:00 – 16:00",
-      tiempoEstimadoEntrega: "3 – 6 horas"
-    },
-    {
-      zona: "Zona Sur",
-      comunasCubiertas: "Bulnes, Quillón",
-      diasDespacho: "Miércoles",
-      horario: "08:00 – 16:00",
-      tiempoEstimadoEntrega: "4 – 6 horas"
-    },
-    {
-      zona: "Zona Comercial",
-      comunasCubiertas: "Parques industriales y locales comerciales",
-      diasDespacho: "Lunes a Viernes",
-      horario: "07:00 – 17:00",
-      tiempoEstimadoEntrega: "Según agenda"
+      stockActual: 8,
+      imagenSrc: "/img/detecr.webp"
     }
   ]
 };

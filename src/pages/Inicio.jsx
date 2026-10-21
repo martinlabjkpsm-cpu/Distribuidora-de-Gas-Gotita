@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Title } from '../components/Atoms/Title';
 import { Imagen } from '../components/Atoms/Imagen';
-import { Boton } from '../components/Atoms/Boton';
 import { EncabezadoPrincipal } from '../components/Organisms/EncabezadoPrincipal';
 import { Footer } from '../components/Organisms/Footer';
 
@@ -55,76 +54,67 @@ export const Inicio = () => {
   ];
 
   return (
-    <div className="pagina-inicio">
-      <EncabezadoPrincipal
-        titulo="Distribuidora de Gas Gotita"
-        showNav={true}
-        linkTexto="Inicio de Sesión"
-        rutaDestino="/login"
-      />
+    <div className="min-vh-100 d-flex flex-column bg-light">
+      <EncabezadoPrincipal />
 
-      <main className="contenido-principal container py-4">
-        
-        <section className="nosotros mb-5">
-          <Title level={2}>¿Quiénes somos?</Title>
-          <p>
-            <strong>Distribuidora de Gotita</strong> es una empresa familiar fundada en el año{' '}
-            <strong>1998</strong> en la comuna de <strong>Chillán, Región de Ñuble</strong>.
-            Desde hace más de dos décadas, nos dedicamos con orgullo y compromiso a la
-            distribución de gas licuado a domicilio.
+      <main className="container flex-grow-1 py-4">
+        <section className="text-center py-4 bg-white rounded shadow-sm p-4 mb-4 border">
+          <Title level={1} className="display-6 fw-bold mb-3 text-danger">
+            Distribuidora de Gas Gotita
+          </Title>
+          <p className="lead text-muted max-w-2xl mx-auto">
+            Empresa familiar fundada en 1998 en Chillán, Región de Ñuble. Ofrecemos distribución de gas licuado a domicilio con la rapidez y confianza de siempre.
           </p>
         </section>
 
-        
-        <section className="productos mb-5">
-          <Title level={2}>Nuestros cilindros</Title>
-          <div className="cilindros-grid d-flex flex-wrap gap-3 mt-3">
-            {cilindrosDestacados['map']((item) => (
-              <div key={item['id']} className="cilindro-card card p-3" style={{ width: '250px' }}>
-                <Imagen src={item.imagenSrc} alt={item.nombre} className="card-img-top img-cilindro" />
-                <Title level={3}>{item.nombre}</Title>
-                <p>{item.descripcion}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="otros-productos mt-3">
-            <p>
-              <strong>Otros productos:</strong> Contamos con una variedad de{' '}
-              <strong>Accesorios</strong>, <strong>Mangueras</strong> y{' '}
-              <strong>Reguladores</strong> ideales para renovar tu sistema de gas con total
-              seguridad.
-            </p>
-          </div>
-        </section>
-
-        
-        <section className="pasos-pedido mb-5">
-          <Title level={2}>¿Cómo pedir nuestro Gas?</Title>
-          <div className="pasos-contenedor d-flex flex-wrap gap-3 mt-3">
-            {pasosCompra['map']((paso) => (
-              <div key={paso.numero} className="paso-card border p-3 rounded flex-grow-1">
-                <Title level={3}>
-                  {paso.numero}. {paso.titulo}
-                </Title>
-                <p>{paso.descripcion}</p>
+        <section className="mb-5">
+          <Title level={2} className="fs-4 mb-3 text-dark fw-bold">
+            Nuestros Cilindros Destacados
+          </Title>
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+            {cilindrosDestacados.map((item) => (
+              <div key={item.id} className="col">
+                <div className="card h-100 shadow-sm border bg-white text-center p-3">
+                  <Imagen
+                    src={item.imagenSrc}
+                    alt={item.nombre}
+                    className="card-img-top img-fluid mb-2 mx-auto"
+                    style={{ maxHeight: '140px', objectFit: 'contain' }}
+                  />
+                  <div className="card-body p-2">
+                    <Title level={3} className="fs-6 fw-bold mb-2">
+                      {item.nombre}
+                    </Title>
+                    <p className="small text-muted mb-0">{item.descripcion}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        
-        <section className="acciones-inicio d-flex gap-3 justify-content-center">
-          <Boton variant="primary" onClick={() => navigate('/login')}>
-            Inicia Sesión Aquí
-          </Boton>
-          <Boton variant="secondary" onClick={() => navigate('/registro')}>
-            Regístrate Aquí
-          </Boton>
+        <section className="mb-5 bg-white p-4 rounded border shadow-sm">
+          <Title level={2} className="fs-4 mb-4 text-center fw-bold">
+            ¿Cómo pedir nuestro Gas?
+          </Title>
+          <div className="row g-4">
+            {pasosCompra.map((paso) => (
+              <div key={paso.numero} className="col-md-4">
+                <div className="text-center p-3 border rounded bg-light h-100">
+                  <div className="badge bg-danger fs-5 mb-2 rounded-circle p-2 px-3">
+                    {paso.numero}
+                  </div>
+                  <Title level={3} className="fs-6 fw-bold mb-2">
+                    {paso.titulo}
+                  </Title>
+                  <p className="small text-muted mb-0">{paso.descripcion}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       </main>
 
-      
       <Footer />
     </div>
   );

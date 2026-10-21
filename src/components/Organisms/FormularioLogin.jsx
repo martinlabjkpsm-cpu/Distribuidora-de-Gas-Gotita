@@ -1,65 +1,46 @@
-import React, { useState } from 'react';
-import { Title } from '../Atoms/Title';
-import { Boton } from '../Atoms/Boton';
-import { LinkNav } from '../Atoms/LinkNav';
-import { CampoFormulario } from '../Molecules/CampoFormulario';
-import { validarRut, validarRequerido } from '../../utils/validaciones';
+import React from 'react';
+import { Title, Boton } from '../Atoms';
+import { CampoFormulario } from '../Molecules';
 
-export const FormularioLogin = ({ onEnviar }) => {
-  const [formData, setFormData] = useState({ rut: '', password: '' });
-  const [errores, setErrores] = useState({ rut: '', password: '' });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrores({ ...errores, [e.target.name]: '' });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const errorRut = !validarRut(formData.rut) ? 'RUT no válido' : '';
-    const errorPass = !validarRequerido(formData.password) ? 'La contraseña es requerida' : '';
-
-    if (errorRut || errorPass) {
-      setErrores({ rut: errorRut, password: errorPass });
-    } else if (onEnviar) {
-      onEnviar(formData);
-    }
-  };
-
+export const FormularioLogin = ({
+  rut,
+  password,
+  onChangeRut,
+  onChangePassword,
+  onSubmit,
+  error
+}) => {
   return (
-    <section className="contenedor-login">
-      <Title level={2}>Iniciar Sesión</Title>
-      <form onSubmit={handleSubmit} className="form-login" noValidate>
-        <CampoFormulario
-          id="rut"
-          name="rut"
-          label="RUT del Usuario"
-          placeholder="12345678-9"
-          value={formData.rut}
-          onChange={handleChange}
-          error={errores.rut}
-        />
-        <CampoFormulario
-          id="password"
-          name="password"
-          type="password"
-          label="Contraseña"
-          placeholder="••••••••"
-          value={formData.password}
-          onChange={handleChange}
-          error={errores.password}
-        />
-        <Boton type="submit" variant="primary" fullWidth className="mt-3">
-          Ingresar al Sistema
-        </Boton>
-      </form>
+    <form onSubmit={onSubmit}>
+      {error && <div className="alert alert-danger py-2 small mb-3">{error}</div>}
 
-      <nav className="links-auxiliares mt-3 d-flex flex-column gap-2">
-        <LinkNav to="/registro">¿No tienes cuenta? Regístrate aquí</LinkNav>
-        <LinkNav to="/">Volver al Inicio</LinkNav>
-      </nav>
-    </section>
+      <CampoFormulario
+        id="login-rut"
+        name="rut"
+        label="RUT o Correo Electrónico"
+        placeholder="12345678-9 o usuario@gaselvolcan.cl"
+        value={rut}
+        onChange={onChangeRut}
+        required
+        className="mb-2"
+      />
+
+      <CampoFormulario
+        id="login-password"
+        name="password"
+        type="password"
+        label="Contraseña"
+        placeholder="••••••••"
+        value={password}
+        onChange={onChangePassword}
+        required
+        className="mb-3"
+      />
+
+      <Boton type="submit" variant="primary" fullWidth className="btn btn-primary btn-lg w-100 fw-bold mb-3">
+        Ingresar al Sistema
+      </Boton>
+    </form>
   );
 };
 
