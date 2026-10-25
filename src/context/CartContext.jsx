@@ -1,83 +1,80 @@
-import React, { createContext, useContext, useState } from 'react';
+// CartContext: el carrito (pedido en curso) compartido entre páginas.
+// Se guarda en localStorage para que no se pierda al recargar.
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const CartContext = createContext({
-  carrito: [],
-  agregarAlCarrito: () => {},
-  disminuirCantidad: () => {},
-  eliminarDelCarrito: () => {},
-  limpiarCarrito: () => {},
-  totalCarrito: 0
-});
+const CLAVE_CARRITO = 'gas_gotita_carrito';
+
+const CartContext = createContext(null);
+
+const leerCarritoGuardado = () => {
+  try {
+    const guardado = localStorage.getItem(CLAVE_CARRITO);
+    const lista = guardado ? JSON.parse(guardado) : [];
+    return Array.isArray(lista) ? lista : [];
+  } catch {
+    return [];
+  }
+};
+
+const idDe = (item) => item.codigo || item.id;
 
 export const CartProvider = ({ children }) => {
-  const [carrito, setCarrito] = useState([]);
+  // La función dentro de useState lee localStorage solo la primera vez.
+  const [carrito, setCarrito] = useState(leerCarritoGuardado);
+
+  // Cada vez que el carrito cambia, se guarda.
+  useEffect(() => {
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+  }, [carrito]);
 
   const agregarAlCarrito = (producto) => {
     if (!producto) return;
+    const idProd = idDe(producto);
     setCarrito((prev) => {
-      const lista = Array.isArray(prev) ? prev : [];
-      const idProd = producto.id || producto.codigo;
-      const existe = lista.find((item) => (item.id || item.codigo) === idProd);
-
+      const existe = prev.find((item) => idDe(item) === idProd);
       if (existe) {
-        return lista.map((item) =>
-          (item.id || item.codigo) === idProd
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
+        return prev.map((item) =>
+          idDe(item) === idProd ? { ...item, cantidad: item.cantidad + 1 } : item
         );
       }
-
       return [
-        ...lista,
+        ...prev,
         {
           ...producto,
           id: idProd,
-          codigo: producto.codigo || idProd,
+          codigo: idProd,
           nombre: producto.nombre || producto.producto,
-          cantidad: 1
-        }
+          cantidad: 1,
+        },
       ];
     });
   };
 
   const disminuirCantidad = (id) => {
-    setCarrito((prev) => {
-      const lista = Array.isArray(prev) ? prev : [];
-      return lista
-        .map((item) => {
-          if ((item.id || item.codigo) === id) {
-            return { ...item, cantidad: item.cantidad - 1 };
-          }
-          return item;
-        })
-        .filter((item) => item.cantidad > 0);
-    });
+    setCarrito((prev) =>
+      prev
+        .map((item) => (idDe(item) === id ? { ...item, cantidad: item.cantidad - 1 } : item))
+        .filter((item) => item.cantidad > 0)
+    );
   };
 
   const eliminarDelCarrito = (id) => {
-    setCarrito((prev) => {
-      const lista = Array.isArray(prev) ? prev : [];
-      return lista.filter((item) => (item.id || item.codigo) !== id);
-    });
+    setCarrito((prev) => prev.filter((item) => idDe(item) !== id));
   };
 
-  const limpiarCarrito = () => {
-    setCarrito([]);
-  };
+  const limpiarCarrito = () => setCarrito([]);
 
-  const totalCarrito = Array.isArray(carrito)
-    ? carrito.reduce((acc, item) => acc + (item.cantidad || 0) * (item.precioUnitario || 0), 0)
-    : 0;
+  const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 
   return (
     <CartContext.Provider
       value={{
-        carrito: Array.isArray(carrito) ? carrito : [],
+        carrito,
+        cantidadTotal,
         agregarAlCarrito,
         disminuirCantidad,
         eliminarDelCarrito,
         limpiarCarrito,
-        totalCarrito
       }}
     >
       {children}
@@ -88,14 +85,7 @@ export const CartProvider = ({ children }) => {
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    return {
-      carrito: [],
-      agregarAlCarrito: () => {},
-      disminuirCantidad: () => {},
-      eliminarDelCarrito: () => {},
-      limpiarCarrito: () => {},
-      totalCarrito: 0
-    };
+    throw new Error('useCart debe usarse dentro de un CartProvider');
   }
   return context;
 };
