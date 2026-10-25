@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { categorias, catalogoGasElVolcan } from './catalogoGasElVolcan';
+import { categorias, catalogoGasElVolcan } from './catalogoGasGotita';
 
 describe('Pruebas en los datos del Catálogo (catalogoGasElVolcan.js)', () => {
 

@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { validarRut, validarEmail, validarDireccionDespacho } from './validaciones';
+import {
+  validarRut,
+  validarEmail,
+  validarDireccionDespacho,
+  validarRutOEmailFormulario
+} from './validaciones';
 
 describe('Pruebas en las funciones de validación (validaciones.js)', () => {
 
@@ -25,6 +30,18 @@ describe('Pruebas en las funciones de validación (validaciones.js)', () => {
     
     // Dirección demasiado corta (menos de 5 caracteres)
     expect(validarDireccionDespacho('Av')).toBe(false);
+  });
+
+  // PRUEBA 11 
+  it('debe validar el campo del formulario exigiendo RUT obligatorio y válido', () => {
+    // Válido (devuelve string vacío)
+    expect(validarRutOEmailFormulario('12.345.678-5')).toBe('');
+
+    // Campo vacío
+    expect(validarRutOEmailFormulario('')).toBe('El RUT es obligatorio');
+
+    // RUT inválido
+    expect(validarRutOEmailFormulario('12345678-9')).toBe('RUT no válido. Ejemplo: 12345678-9');
   });
 
 });

@@ -55,12 +55,9 @@ export const validarPassword = (password, minLongitud = 6) => {
 };
 
 export const validarRutOEmailFormulario = (entrada) => {
-  if (!validarRequerido(entrada)) return 'El RUT o correo es obligatorio';
+  if (!validarRequerido(entrada)) return 'El RUT es obligatorio';
   
   const texto = String(entrada).trim();
-  if (texto.includes('@')) {
-    return validarEmail(texto) ? '' : 'Ingresa un correo electrónico válido';
-  }
   return validarRut(texto) ? '' : 'RUT no válido. Ejemplo: 12345678-9';
 };
 

@@ -43,7 +43,6 @@ export const LoginPage = () => {
     if (usuarioService && typeof usuarioService.login === 'function') {
       usuarioEncontrado = usuarioService.login({
         rut: rutLimpio,
-        email: rutLimpio,
         password: passLimpia,
         contrasena: passLimpia
       });
@@ -59,10 +58,9 @@ export const LoginPage = () => {
 
       usuarioEncontrado = listaUsuarios.find((u) => {
         const uRut = (u.rut || '').trim().toLowerCase().replace(/\./g, '');
-        const uEmail = (u.email || '').trim().toLowerCase();
         const uPass = String(u.password || u.contrasena || u.clave || '').trim();
 
-        const coincideUsuario = (uRut === rutSinPuntos) || (uEmail === rutSinPuntos) || (u.rut === rutLimpio);
+        const coincideUsuario = (uRut === rutSinPuntos) || (u.rut === rutLimpio);
         const coincideClave = uPass === passLimpia;
 
         return coincideUsuario && coincideClave;
@@ -70,7 +68,7 @@ export const LoginPage = () => {
     }
 
     if (!usuarioEncontrado) {
-      setErrorGeneral('RUT/Correo o contraseña incorrectos.');
+      setErrorGeneral('RUT o contraseña incorrectos.');
       return;
     }
 
@@ -116,11 +114,11 @@ export const LoginPage = () => {
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="mb-3">
-            <label className="form-label small fw-bold">RUT o Correo Electrónico</label>
+            <label className="form-label small fw-bold">RUT</label>
             <input
               type="text"
               className={`form-control ${errores.rut ? 'is-invalid' : ''}`}
-              placeholder="12345678-9 o usuario@correo.cl"
+              placeholder="12345678-9"
               value={rut}
               onChange={(e) => {
                 setRut(e.target.value);

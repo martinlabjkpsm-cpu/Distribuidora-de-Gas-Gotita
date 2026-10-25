@@ -6,7 +6,9 @@ import { TarjetaProducto } from '../components/Molecules';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { pedidoService } from '../services/pedidoService';
-import { catalogoGasElVolcan, categorias } from '../data/catalogoGasElVolcan';
+
+// Importa el export default de catalogoGasGotita.js y las categorías
+import catalogoGasGotita, { categorias } from '../data/catalogoGasGotita';
 import { formatearMoneda } from '../utils/formato';
 
 export const ClientePage = () => {
@@ -22,6 +24,7 @@ export const ClientePage = () => {
   const eliminarDelCarrito = cartContext.eliminarDelCarrito || (() => {});
   const limpiarCarrito = cartContext.limpiarCarrito || (() => {});
 
+  const [ultimoPedido, setUltimoPedido] = useState(null);
   const [tipoTarifa, setTipoTarifa] = useState('RESIDENCIAL');
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('TODAS');
   const [direccion, setDireccion] = useState('');
@@ -29,8 +32,8 @@ export const ClientePage = () => {
   const [metodoPago, setMetodoPago] = useState('EFECTIVO');
   const [mensajeNotificacion, setMensajeNotificacion] = useState(null);
 
-  const productosRaw = Array.isArray(catalogoGasElVolcan?.productosYTarifas)
-    ? catalogoGasElVolcan.productosYTarifas
+  const productosRaw = Array.isArray(catalogoGasGotita?.productosYTarifas)
+    ? catalogoGasGotita.productosYTarifas
     : [];
 
   const listaProductos = productosRaw.map((p) => ({
@@ -100,9 +103,11 @@ export const ClientePage = () => {
         metodoPago
       });
 
+      setUltimoPedido(nuevoPedido);
+
       setMensajeNotificacion({
         tipo: 'success',
-        texto: `¡Pedido #${nuevoPedido.id} enviado exitosamente! Estará en camino pronto.`
+        texto: `¡Pedido #${nuevoPedido?.id || '101'} enviado exitosamente! Estará en camino pronto.`
       });
 
       limpiarCarrito();
@@ -141,6 +146,60 @@ export const ClientePage = () => {
               className="btn-close float-end"
               onClick={() => setMensajeNotificacion(null)}
             ></button>
+          </div>
+        )}
+
+        {/* 📦 TARJETA DE CONFIRMACIÓN DEL ÚLTIMO PEDIDO */}
+        {ultimoPedido && (
+          <div className="card mb-4 border-success shadow-sm bg-light">
+            <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
+              <h5 className="m-0 fw-bold fs-6">
+                ✓ Pedido #{ultimoPedido.id || '101'} Confirmado
+              </h5>
+              <span className="badge bg-warning text-dark fw-bold">
+                {ultimoPedido.estado || 'PENDIENTE / EN CAMINO'}
+              </span>
+            </div>
+            <div className="card-body">
+              <div className="row g-3">
+                <div className="col-md-6">
+                  <p className="mb-1 small">
+                    <strong>Cliente:</strong> {ultimoPedido.clienteNombre}
+                  </p>
+                  <p className="mb-1 small">
+                    <strong>Dirección de Entrega:</strong> {ultimoPedido.direccion}
+                  </p>
+                  {ultimoPedido.indicaciones && (
+                    <p className="mb-1 small text-muted">
+                      <strong>Indicaciones:</strong> {ultimoPedido.indicaciones}
+                    </p>
+                  )}
+                  <p className="mb-0 small">
+                    <strong>Método de Pago:</strong> {ultimoPedido.metodoPago}
+                  </p>
+                </div>
+
+                <div className="col-md-6">
+                  <strong className="d-block small mb-1">Detalle del Pedido:</strong>
+                  <ul className="list-unstyled small mb-2">
+                    {ultimoPedido.items?.map((item, idx) => (
+                      <li key={idx} className="d-flex justify-content-between">
+                        <span>
+                          {item.cantidad}x {item.nombre || item.producto}
+                        </span>
+                        <span className="fw-bold">
+                          {formatearMoneda(item.cantidad * item.precioUnitario)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="d-flex justify-content-between border-top pt-1 fw-bold fs-6 text-success">
+                    <span>Total A Pagar:</span>
+                    <span>{formatearMoneda(ultimoPedido.total)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
