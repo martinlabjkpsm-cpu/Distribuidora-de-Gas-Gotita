@@ -1,3 +1,6 @@
+// Reglas de validación: funciones puras.
+// Las que terminan en "Formulario" devuelven un mensaje de error, o '' si el valor está bien.
+
 export const validarRequerido = (valor) => {
   if (valor === undefined || valor === null) return false;
   return String(valor).trim().length > 0;
@@ -54,11 +57,11 @@ export const validarPassword = (password, minLongitud = 6) => {
   return String(password).length >= minLongitud;
 };
 
-export const validarRutOEmailFormulario = (entrada) => {
+// ---------- Validaciones para formularios (devuelven el mensaje) ----------
+
+export const validarRutFormulario = (entrada) => {
   if (!validarRequerido(entrada)) return 'El RUT es obligatorio';
-  
-  const texto = String(entrada).trim();
-  return validarRut(texto) ? '' : 'RUT no válido. Ejemplo: 12345678-9';
+  return validarRut(String(entrada).trim()) ? '' : 'RUT no válido. Ejemplo: 12345678-9';
 };
 
 export const validarPasswordFormulario = (password) => {
@@ -67,14 +70,38 @@ export const validarPasswordFormulario = (password) => {
   return '';
 };
 
-export default {
-  validarRequerido,
-  limpiarRut,
-  validarRut,
-  validarEmail,
-  validarDireccionDespacho,
-  validarNombre,
-  validarPassword,
-  validarRutOEmailFormulario,
-  validarPasswordFormulario
+export const validarCampoObligatorio = (valor, nombreCampo = 'Este campo') => {
+  return validarRequerido(valor) ? '' : `${nombreCampo} es obligatorio`;
 };
+
+export const validarNombreFormulario = (nombre, nombreCampo = 'El nombre') => {
+  if (!validarRequerido(nombre)) return `${nombreCampo} es obligatorio`;
+  if (!validarNombre(nombre, 3)) return `${nombreCampo} debe tener al menos 3 caracteres`;
+  return '';
+};
+
+export const validarEmailFormulario = (email) => {
+  if (!validarRequerido(email)) return 'El correo es obligatorio';
+  return validarEmail(email) ? '' : 'Ingresa un correo válido. Ejemplo: nombre@correo.cl';
+};
+
+export const validarDireccionFormulario = (direccion) => {
+  if (!validarRequerido(direccion)) return 'La dirección es obligatoria';
+  return validarDireccionDespacho(direccion) ? '' : 'La dirección debe tener al menos 5 caracteres';
+};
+
+export const validarNumeroFormulario = (valor, minimo = 0, nombreCampo = 'El valor') => {
+  if (!validarRequerido(valor)) return `${nombreCampo} es obligatorio`;
+  const numero = Number(valor);
+  if (Number.isNaN(numero)) return `${nombreCampo} debe ser un número`;
+  if (numero < minimo) return `${nombreCampo} debe ser mayor o igual a ${minimo}`;
+  return '';
+};
+
+export const validarConfirmacionClave = (clave, confirmacion) => {
+  if (!validarRequerido(confirmacion)) return 'Confirma tu contraseña';
+  return clave === confirmacion ? '' : 'Las contraseñas no coinciden';
+};
+
+// Devuelve true si el objeto de errores no tiene ningún mensaje.
+export const sinErrores = (errores) => Object.values(errores).every((mensaje) => !mensaje);

@@ -1,21 +1,16 @@
 import React from 'react';
 
-
-export const Imagen = ({ src, alt, className = '' }) => { 
-  return ( 
-    <img 
-      src={src} 
-      alt={alt || 'Imagen del producto'} 
-      className={className} 
-      onError={(e) => { 
-        const elemento = e['target']; 
-        if (elemento && elemento['classList']) { 
-          elemento['classList'].add('img-error'); 
-        } 
-      }} 
-    /> 
-  ); 
-}; 
-
+// Átomo: imagen. Si el archivo no carga, le agrega la clase "img-error".
+export const Imagen = ({ src, alt, className = '', style }) => {
+  return (
+    <img
+      src={src}
+      alt={alt || 'Imagen del producto'}
+      className={className}
+      style={style}
+      onError={(e) => e.target.classList.add('img-error')}
+    />
+  );
+};
 
 export default Imagen;

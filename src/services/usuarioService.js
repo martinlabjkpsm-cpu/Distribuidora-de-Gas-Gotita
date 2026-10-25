@@ -1,81 +1,100 @@
+// usuarioService: CRUD de usuarios guardados en localStorage.
 import { usuarios } from '../data/usuarios';
 import { limpiarRut } from '../utils/validaciones';
 
 const USUARIOS_STORAGE_KEY = 'gas_el_volcan_usuarios';
 
+const guardar = (lista) => localStorage.setItem(USUARIOS_STORAGE_KEY, JSON.stringify(lista));
+const mismoRut = (a, b) => limpiarRut(a).toUpperCase() === limpiarRut(b).toUpperCase();
+
 export const usuarioService = {
-  // Obtener todos los usuarios
+  // READ: todos los usuarios
   getUsuarios: () => {
     const usuariosGuardados = localStorage.getItem(USUARIOS_STORAGE_KEY);
     if (!usuariosGuardados) {
-      localStorage.setItem(USUARIOS_STORAGE_KEY, JSON.stringify(usuarios));
+      guardar(usuarios);
       return usuarios;
     }
     return JSON.parse(usuariosGuardados);
   },
 
-  // Autenticar credenciales
-  autenticar: (identificador, password) => {
-    const listaUsuarios = usuarioService.getUsuarios();
-    const idLimpio = limpiarRut(identificador).toUpperCase();
-
-    const usuarioEncontrado = listaUsuarios.find((user) => {
-      const rutUserLimpio = limpiarRut(user.rut).toUpperCase();
-      const emailUser = user.email.toLowerCase();
-      const idInput = identificador.toLowerCase();
-
-      return (rutUserLimpio === idLimpio || emailUser === idInput) && user.password === password;
-    });
+  // Login: busca por RUT (con o sin puntos) y contraseña. Devuelve el usuario sin la contraseña.
+  autenticar: (rut, password) => {
+    const usuarioEncontrado = usuarioService
+      .getUsuarios()
+      .find((user) => mismoRut(user.rut, rut) && user.password === password);
 
     if (!usuarioEncontrado) {
-      throw new Error('Credenciales inválidas. Verifica tu RUT/Email y contraseña.');
+      throw new Error('RUT o contraseña incorrectos.');
+    }
+    if (usuarioEncontrado.activo === false) {
+      throw new Error('Tu cuenta está desactivada. Contacta al administrador.');
     }
 
-    const { password: _, ...usuarioSinPassword } = usuarioEncontrado;
+    const { password: _omitida, ...usuarioSinPassword } = usuarioEncontrado;
     return usuarioSinPassword;
   },
 
-  // Crear un nuevo usuario
+  // CREATE
   crearUsuario: (datosUsuario) => {
     const lista = usuarioService.getUsuarios();
-    const rutLimpioNuevo = limpiarRut(datosUsuario.rut).toUpperCase();
 
-    // Validar duplicado por RUT o Email
     const existe = lista.some(
       (u) =>
-        limpiarRut(u.rut).toUpperCase() === rutLimpioNuevo ||
-        u.email.toLowerCase() === datosUsuario.email.toLowerCase()
+        mismoRut(u.rut, datosUsuario.rut) ||
+        u.email.toLowerCase() === String(datosUsuario.email).toLowerCase()
     );
-
     if (existe) {
-      throw new Error('Ya existe un usuario registrado con ese RUT o Correo Electrónico.');
+      throw new Error('Ya existe un usuario registrado con ese RUT o correo electrónico.');
     }
 
     const nuevoUsuario = {
       rut: datosUsuario.rut,
       nombre: datosUsuario.nombre,
       email: datosUsuario.email,
-      password: datosUsuario.password || 'gas123Password',
-      rol: datosUsuario.rol.toUpperCase()
+      password: datosUsuario.password,
+      rol: String(datosUsuario.rol || 'CLIENTE').toUpperCase(),
+      activo: true,
     };
 
-    const listaActualizada = [...lista, nuevoUsuario];
-    localStorage.setItem(USUARIOS_STORAGE_KEY, JSON.stringify(listaActualizada));
+    guardar([...lista, nuevoUsuario]);
     return nuevoUsuario;
   },
 
-  // Eliminar usuario
-  eliminarUsuario: (rutAEliminar) => {
+  // UPDATE: cambia nombre, correo, rol o contraseña (si viene una nueva)
+  actualizarUsuario: (rut, cambios) => {
     const lista = usuarioService.getUsuarios();
-    const rutLimpioDel = limpiarRut(rutAEliminar).toUpperCase();
+    if (!lista.some((u) => mismoRut(u.rut, rut))) {
+      throw new Error('No existe un usuario con ese RUT.');
+    }
+    const cambiosLimpios = { ...cambios };
+    if (!cambiosLimpios.password) delete cambiosLimpios.password; // contraseña vacía = no cambiar
+    if (cambiosLimpios.rol) cambiosLimpios.rol = cambiosLimpios.rol.toUpperCase();
 
-    const listaActualizada = lista.filter(
-      (u) => limpiarRut(u.rut).toUpperCase() !== rutLimpioDel
+    const listaActualizada = lista.map((u) =>
+      mismoRut(u.rut, rut) ? { ...u, ...cambiosLimpios, rut: u.rut } : u
     );
-
-    localStorage.setItem(USUARIOS_STORAGE_KEY, JSON.stringify(listaActualizada));
+    guardar(listaActualizada);
     return listaActualizada;
-  }
+  },
+
+  // UPDATE: activa o desactiva una cuenta
+  cambiarActivo: (rut) => {
+    const listaActualizada = usuarioService
+      .getUsuarios()
+      .map((u) => (mismoRut(u.rut, rut) ? { ...u, activo: u.activo === false } : u));
+    guardar(listaActualizada);
+    return listaActualizada;
+  },
+
+  // DELETE
+  eliminarUsuario: (rutAEliminar) => {
+    const listaActualizada = usuarioService
+      .getUsuarios()
+      .filter((u) => !mismoRut(u.rut, rutAEliminar));
+    guardar(listaActualizada);
+    return listaActualizada;
+  },
 };
 
 export default usuarioService;

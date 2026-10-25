@@ -1,182 +1,68 @@
 import React from 'react';
-import { Title, Boton, Select } from '../Atoms';
-import { CampoFormulario } from '../Molecules';
-import { useCart } from '../../context/CartContext';
+import { Title, Boton } from '../Atoms';
+import { ItemCarrito } from '../Molecules';
 import { formatearMoneda } from '../../utils/formato';
-import { validarDireccionDespacho } from '../../utils/validaciones';
+import { precioSegunCliente, calcularTotal } from '../../utils/precios';
 
-export const CarritoCompras = ({ catalogo = [], onPedidoExitoso }) => {
-  const {
-    items,
-    tipoTarifa,
-    direccion,
-    indicaciones,
-    metodoPago,
-    setDireccion,
-    setIndicaciones,
-    setMetodoPago,
-    actualizarCantidad,
-    cambiarTarifa,
-    vaciarCarrito,
-    obtenerPrecioProducto,
-    confirmarYPagar
-  } = useCart();
-
-  const listaItemsCarrito = catalogo
-    .filter((prod) => (items[prod.codigo || prod.id] || 0) > 0)
-    .map((prod) => {
-      const idProd = prod.codigo || prod.id;
-      const cantidad = items[idProd];
-      const precioUnitario = obtenerPrecioProducto(prod);
-      const subtotalConjunto = precioUnitario * cantidad;
-
-      return {
-        id: idProd,
-        nombre: prod.producto || prod.nombre,
-        cantidad,
-        precioUnitario,
-        subtotalConjunto
-      };
-    });
-
-  const totalPagar = listaItemsCarrito.reduce((acc, item) => acc + item.subtotalConjunto, 0);
-  const esDireccionValida = validarDireccionDespacho(direccion);
-
-  const handleSubmitPagar = (e) => {
-    e.preventDefault();
-    if (listaItemsCarrito.length === 0 || !esDireccionValida) return;
-
-    const pedidoCreado = confirmarYPagar(catalogo);
-    if (onPedidoExitoso) {
-      onPedidoExitoso(pedidoCreado);
-    }
-  };
+// Organismo: el carrito (pedido en curso). Recibe los ítems y las acciones por props.
+export const CarritoCompras = ({
+  items = [],
+  tipoTarifa = 'RESIDENCIAL',
+  onCambiarTarifa,
+  onSumar,
+  onRestar,
+  onEliminar,
+  onVaciar,
+}) => {
+  const total = calcularTotal(items, tipoTarifa);
 
   return (
-    <section className="carrito-organismo card p-4 border shadow-sm bg-white">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <Title level={3} className="fs-5 m-0">🛒 Mi Carrito de Compras</Title>
-        {listaItemsCarrito.length > 0 && (
-          <button 
-            type="button" 
-            className="btn btn-outline-danger btn-sm"
-            onClick={vaciarCarrito}
-          >
-            Vaciar
-          </button>
+    <section>
+      <div className="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+        <Title level={2} className="fs-5 m-0">🛒 Tu carrito</Title>
+        {items.length > 0 && (
+          <Boton variant="outline-danger" className="btn-sm" onClick={onVaciar}>Vaciar</Boton>
         )}
       </div>
 
-      <div className="mb-3 p-2 bg-light border rounded">
-        <label className="form-label fw-bold small d-block mb-2">Selecciona el Tipo de Tarifa:</label>
-        <div className="btn-group w-100" role="group">
-          <button
-            type="button"
-            className={`btn btn-sm ${tipoTarifa === 'RESIDENCIAL' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => cambiarTarifa('RESIDENCIAL')}
-          >
-            🏠 Residencial
-          </button>
-          <button
-            type="button"
-            className={`btn btn-sm ${tipoTarifa === 'COMERCIAL' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => cambiarTarifa('COMERCIAL')}
-          >
-            🏢 Comercial / PYME
-          </button>
+      <div className="mb-3 p-2 bg-light rounded border d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <span className="small fw-bold">Tarifa:</span>
+        <div className="btn-group btn-group-sm" role="group" aria-label="Tipo de tarifa">
+          {['RESIDENCIAL', 'COMERCIAL'].map((tipo) => (
+            <Boton
+              key={tipo}
+              variant={tipoTarifa === tipo ? 'danger' : 'outline-danger'}
+              onClick={() => onCambiarTarifa(tipo)}
+            >
+              {tipo === 'RESIDENCIAL' ? 'Residencial' : 'Comercial'}
+            </Boton>
+          ))}
         </div>
       </div>
 
-      {listaItemsCarrito.length === 0 ? (
-        <div className="alert alert-info text-center py-3 my-2 small">
-          Tu carrito está vacío. Elige tus cilindros o accesorios en el catálogo.
-        </div>
+      {items.length === 0 ? (
+        <p className="text-center text-muted small py-3 mb-0">No has agregado productos al carrito.</p>
       ) : (
-        <ul className="list-group mb-3">
-          {listaItemsCarrito.map((item) => (
-            <li 
-              key={item.id} 
-              className="list-group-item d-flex justify-content-between align-items-center py-2"
-            >
-              <div>
-                <strong className="d-block small">{item.nombre}</strong>
-                <small className="text-muted">
-                  {item.cantidad} x {formatearMoneda(item.precioUnitario)}
-                </small>
-              </div>
-              <div className="text-end">
-                <span className="fw-bold d-block text-primary">
-                  {formatearMoneda(item.subtotalConjunto)}
-                </span>
-                <button
-                  type="button"
-                  className="btn btn-link btn-sm text-danger p-0 border-0"
-                  onClick={() => actualizarCantidad(item.id, 0)}
-                >
-                  Quitar
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="list-group list-group-flush mb-2">
+            {items.map((item) => (
+              <ItemCarrito
+                key={item.codigo}
+                nombre={item.nombre}
+                cantidad={item.cantidad}
+                precioUnitario={precioSegunCliente(item, tipoTarifa)}
+                onSumar={() => onSumar(item)}
+                onRestar={() => onRestar(item.codigo)}
+                onEliminar={() => onEliminar(item.codigo)}
+              />
+            ))}
+          </ul>
+          <div className="d-flex justify-content-between border-top pt-2 fw-bold fs-5">
+            <span>Total:</span>
+            <span className="text-success">{formatearMoneda(total)}</span>
+          </div>
+        </>
       )}
-
-      <form onSubmit={handleSubmitPagar}>
-        <CampoFormulario
-          id="direccion-despacho"
-          name="direccion"
-          label="Dirección de Despacho (Chillán / Ñuble)"
-          placeholder="Ej: Av. Brasil 456, Chillán"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-          required
-          error={direccion && !esDireccionValida ? 'Ingresa una dirección válida' : null}
-          className="mb-2"
-        />
-
-        <CampoFormulario
-          id="indicaciones-despacho"
-          name="indicaciones"
-          label="Indicaciones de entrega (Opcional)"
-          placeholder="Ej: Timbre de la derecha, llamar al llegar"
-          value={indicaciones}
-          onChange={(e) => setIndicaciones(e.target.value)}
-          rows={2}
-          className="mb-3"
-        />
-
-        <div className="mb-3">
-          <label htmlFor="metodo-pago-select" className="form-label small fw-bold">Método de Pago:</label>
-          <Select
-            id="metodo-pago-select"
-            name="metodoPago"
-            value={metodoPago}
-            onChange={(e) => setMetodoPago(e.target.value)}
-            options={[
-              { value: 'EFECTIVO', label: 'Efectivo (\$) al Repartidor' },
-              { value: 'TRANSFERENCIA', label: 'Transferencia Bancaria' },
-              { value: 'DEBITO', label: 'Tarjeta Débito / POS' }
-            ]}
-          />
-        </div>
-
-        <div className="box-total bg-light p-3 rounded mb-3 border text-end">
-          <span className="text-muted small d-block">Tarifa Aplicada: {tipoTarifa}</span>
-          <span className="fs-5 fw-bold text-dark d-block">
-            Total a Pagar: {formatearMoneda(totalPagar)}
-          </span>
-        </div>
-
-        <Boton
-          type="submit"
-          variant="success"
-          fullWidth
-          disabled={listaItemsCarrito.length === 0 || !esDireccionValida}
-          className="btn btn-success btn-lg w-100"
-        >
-          💳 Confirmar y Pagar Pedido
-        </Boton>
-      </form>
     </section>
   );
 };
