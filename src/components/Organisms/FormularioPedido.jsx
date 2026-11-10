@@ -88,9 +88,7 @@ export const FormularioPedido = ({ datosIniciales = {}, zonas = [], deshabilitad
           { value: 'DEBITO', label: 'Débito / tarjeta (POS en terreno)' },
         ]} />
 
-      <Boton type="submit" variant="success" fullWidth className="fw-bold" disabled={deshabilitado}>
-        Confirmar pedido
-      </Boton>
+      <Boton texto="Confirmar pedido" type="submit" variante="success" anchoCompleto className="fw-bold" disabled={deshabilitado} />
       {deshabilitado && (
         <p className="small text-muted text-center mt-2 mb-0">Agrega productos al carrito para confirmar.</p>
       )}

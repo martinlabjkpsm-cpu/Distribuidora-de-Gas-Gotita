@@ -19,7 +19,7 @@ export const MisPedidosPage = () => {
   return (
     <MainLayoutTemplate tituloHeader="Mis pedidos">
       <div className="d-flex justify-content-end mb-3">
-        <Boton variant="outline-secondary" className="btn-sm" onClick={actualizar}>🔄 Actualizar estados</Boton>
+        <Boton texto="🔄 Actualizar estados" variante="outline-secondary" tamano="sm" onClick={actualizar} />
       </div>
 
       {pedidos.length === 0 ? (
@@ -42,9 +42,9 @@ export const MisPedidosPage = () => {
                   <td className="fw-bold">{p.id}</td>
                   <td className="small">{formatearFecha(p.fecha)}</td>
                   <td>{formatearMoneda(p.total)}</td>
-                  <td><Etiqueta variant={p.estado} /></td>
+                  <td><Etiqueta estado={p.estado} /></td>
                   <td>
-                    <Boton variant="outline-danger" className="btn-sm" onClick={() => setSeleccionado(p)}>Ver detalle</Boton>
+                    <Boton texto="Ver detalle" variante="outline-danger" tamano="sm" onClick={() => setSeleccionado(p)} />
                   </td>
                 </tr>
               ))}

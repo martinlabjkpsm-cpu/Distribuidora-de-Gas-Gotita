@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Imagen } from '../Atoms';
+import { Title, Imagen, Boton } from '../Atoms';
 
 // Organismo: tarjetas de los cilindros destacados en la página de inicio.
 export const CatalogoDestacado = ({ productos = [], onVerProducto }) => {
@@ -14,9 +14,7 @@ export const CatalogoDestacado = ({ productos = [], onVerProducto }) => {
               <div className="card-body p-2 d-flex flex-column">
                 <Title level={3} className="fs-6 fw-bold mb-2">{p.producto}</Title>
                 <p className="small text-muted flex-grow-1">{p.descripcion}</p>
-                <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => onVerProducto(p)}>
-                  Ver producto
-                </button>
+                <Boton texto="Ver producto" variante="outline-danger" tamano="sm" onClick={() => onVerProducto(p)} />
               </div>
             </div>
           </div>

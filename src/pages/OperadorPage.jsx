@@ -68,17 +68,14 @@ export const OperadorPage = () => {
           <div className="d-flex flex-wrap align-items-center gap-2">
             {estadosFiltro.map((f) => (
               <Boton
+                texto={f.texto}
                 key={f.valor}
-                variant={filtroEstado === f.valor ? f.color : `outline-${f.color}`}
-                className="btn-sm"
+                variante={filtroEstado === f.valor ? f.color : `outline-${f.color}`}
+                tamano="sm"
                 onClick={() => setFiltroEstado(f.valor)}
-              >
-                {f.texto}
-              </Boton>
+              />
             ))}
-            <Boton variant="outline-secondary" className="btn-sm" onClick={() => setPedidos(pedidoService.getPedidos())}>
-              🔄
-            </Boton>
+            <Boton texto="🔄" ariaLabel="Actualizar" variante="outline-secondary" tamano="sm" onClick={() => setPedidos(pedidoService.getPedidos())} />
           </div>
         </div>
 
@@ -108,7 +105,7 @@ export const OperadorPage = () => {
                     </td>
                     <td className="small">{pedido.productoResumen}</td>
                     <td className="fw-bold text-success small">{formatearMoneda(pedido.total)}</td>
-                    <td><Etiqueta variant={pedido.estado} /></td>
+                    <td><Etiqueta estado={pedido.estado} /></td>
                     <td className="small fw-bold">{pedido.repartidorNombre || 'Sin asignar'}</td>
                     <td>
                       {pedido.estado === 'ENTREGADO' ? (
@@ -126,9 +123,7 @@ export const OperadorPage = () => {
                               <option key={r.rut} value={r.rut}>{r.nombre}</option>
                             ))}
                           </select>
-                          <Boton variant="danger" className="btn-sm" onClick={() => asignar(pedido.id)}>
-                            Asignar
-                          </Boton>
+                          <Boton texto="Asignar" variante="danger" tamano="sm" onClick={() => asignar(pedido.id)} />
                         </div>
                       )}
                     </td>

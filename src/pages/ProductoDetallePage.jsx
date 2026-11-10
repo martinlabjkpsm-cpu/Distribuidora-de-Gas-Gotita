@@ -22,7 +22,7 @@ export const ProductoDetallePage = () => {
     return (
       <MainLayoutTemplate tituloHeader="Producto no encontrado">
         <p>No existe un producto con el código "{params.id}".</p>
-        <Boton variant="danger" onClick={() => navigate('/catalogo')}>Ir al catálogo</Boton>
+        <Boton texto="Ir al catálogo" variante="danger" onClick={() => navigate('/catalogo')} />
       </MainLayoutTemplate>
     );
   }
@@ -46,18 +46,17 @@ export const ProductoDetallePage = () => {
           {agregado && <div className="alert alert-success py-2">Producto agregado al carrito.</div>}
           <div className="d-flex flex-wrap gap-2">
             <Boton
-              variant="danger"
+              texto="+ Agregar al carrito"
+              variante="danger"
               disabled={producto.stockActual === 0}
               onClick={() => {
                 agregarAlCarrito(producto);
                 setAgregado(true);
               }}
-            >
-              + Agregar al carrito
-            </Boton>
+            />
             {/* navigate(-1) vuelve a la página anterior, como el botón Atrás */}
-            <Boton variant="outline-secondary" onClick={() => navigate(-1)}>Volver</Boton>
-            {agregado && <Boton variant="success" onClick={() => navigate('/cliente')}>Ir a confirmar pedido</Boton>}
+            <Boton texto="Volver" variante="outline-secondary" onClick={() => navigate(-1)} />
+            {agregado && <Boton texto="Ir a confirmar pedido" variante="success" onClick={() => navigate('/cliente')} />}
           </div>
         </div>
       </div>

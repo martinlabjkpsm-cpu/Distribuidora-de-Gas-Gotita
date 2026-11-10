@@ -20,7 +20,7 @@ export const PedidoResultadoPage = () => {
         <div className="alert alert-danger">
           Ocurrió un problema al guardar el pedido. Tu carrito sigue guardado, puedes intentarlo de nuevo.
         </div>
-        <Boton variant="danger" onClick={() => navigate('/cliente')}>Volver a intentar</Boton>
+        <Boton texto="Volver a intentar" variante="danger" onClick={() => navigate('/cliente')} />
       </MainLayoutTemplate>
     );
   }
@@ -33,8 +33,8 @@ export const PedidoResultadoPage = () => {
       </p>
       <ComprobantePedido pedido={pedido} />
       <div className="d-flex flex-wrap gap-2 mt-3">
-        <Boton variant="danger" onClick={() => navigate('/mis-pedidos')}>Ver mis pedidos</Boton>
-        <Boton variant="outline-secondary" onClick={() => navigate('/catalogo')}>Seguir comprando</Boton>
+        <Boton texto="Ver mis pedidos" variante="danger" onClick={() => navigate('/mis-pedidos')} />
+        <Boton texto="Seguir comprando" variante="outline-secondary" onClick={() => navigate('/catalogo')} />
       </div>
     </MainLayoutTemplate>
   );

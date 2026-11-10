@@ -45,11 +45,9 @@ export const RepartidorPage = () => {
         <span className="fw-bold small">Hoja de ruta:</span>
         <div className="d-flex flex-wrap gap-1">
           {['TODOS', 'PENDIENTE', 'EN CAMINO', 'ENTREGADO'].map((est) => (
-            <Boton key={est} variant={filtroEstado === est ? 'dark' : 'outline-dark'} className="btn-sm" onClick={() => setFiltroEstado(est)}>
-              {est}
-            </Boton>
+            <Boton texto={est} key={est} variante={filtroEstado === est ? 'dark' : 'outline-dark'} tamano="sm" onClick={() => setFiltroEstado(est)} />
           ))}
-          <Boton variant="outline-secondary" className="btn-sm" onClick={() => setMisPedidos(leerMisPedidos())}>🔄</Boton>
+          <Boton texto="🔄" ariaLabel="Actualizar" variante="outline-secondary" tamano="sm" onClick={() => setMisPedidos(leerMisPedidos())} />
         </div>
       </div>
 
@@ -62,7 +60,7 @@ export const RepartidorPage = () => {
               <div className="card h-100 shadow-sm">
                 <div className="card-header bg-white d-flex justify-content-between align-items-center">
                   <strong className="text-danger">#{ped.id}</strong>
-                  <Etiqueta variant={ped.estado} />
+                  <Etiqueta estado={ped.estado} />
                 </div>
                 <div className="card-body small">
                   <p className="fw-bold mb-1">{ped.clienteNombre}</p>
@@ -75,10 +73,10 @@ export const RepartidorPage = () => {
                 </div>
                 <div className="card-footer bg-white border-0 pb-3">
                   {ped.estado === 'PENDIENTE' && (
-                    <Boton variant="primary" fullWidth onClick={() => cambiarEstado(ped.id, 'EN CAMINO')}>Iniciar ruta (en camino)</Boton>
+                    <Boton texto="Iniciar ruta (en camino)" variante="primary" anchoCompleto onClick={() => cambiarEstado(ped.id, 'EN CAMINO')} />
                   )}
                   {ped.estado === 'EN CAMINO' && (
-                    <Boton variant="success" fullWidth onClick={() => cambiarEstado(ped.id, 'ENTREGADO')}>✓ Confirmar entrega y cobro</Boton>
+                    <Boton texto="✓ Confirmar entrega y cobro" variante="success" anchoCompleto onClick={() => cambiarEstado(ped.id, 'ENTREGADO')} />
                   )}
                   {ped.estado === 'ENTREGADO' && <p className="text-success fw-bold text-center small mb-0">Pedido entregado</p>}
                 </div>

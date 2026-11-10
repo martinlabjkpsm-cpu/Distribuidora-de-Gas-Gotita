@@ -25,12 +25,8 @@ export const Inicio = () => {
           Empresa familiar de Chillán, Región de Ñuble. Gas licuado a domicilio con la rapidez y confianza de siempre.
         </p>
         <div className="d-flex flex-wrap justify-content-center gap-2">
-          <Boton variant="danger" className="btn-lg" onClick={() => navigate('/catalogo')}>
-            Ver catálogo
-          </Boton>
-          <Boton variant="outline-danger" className="btn-lg" onClick={() => navigate('/ofertas')}>
-            Ver ofertas
-          </Boton>
+          <Boton texto="Ver catálogo" variante="danger" tamano="lg" onClick={() => navigate('/catalogo')} />
+          <Boton texto="Ver ofertas" variante="outline-danger" tamano="lg" onClick={() => navigate('/ofertas')} />
         </div>
       </section>
 
@@ -39,13 +35,12 @@ export const Inicio = () => {
         <div className="d-flex flex-wrap gap-2">
           {categorias.map((cat) => (
             <Boton
+              texto={cat}
               key={cat}
-              variant="outline-dark"
-              className="btn-sm"
+              variante="outline-dark"
+              tamano="sm"
               onClick={() => navigate(`/categoria/${encodeURIComponent(cat)}`)}
-            >
-              {cat}
-            </Boton>
+            />
           ))}
         </div>
       </section>

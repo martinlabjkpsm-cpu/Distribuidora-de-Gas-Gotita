@@ -1,34 +1,26 @@
-import React from 'react';
+// Átomo: lista desplegable. Recibe las opciones por props como [{ value, label }].
+function Select(props) {
+  const opciones = props.options || [];
 
-// Átomo: lista desplegable. Recibe las opciones como [{ value, label }].
-export const Select = ({
-  id,
-  name,
-  value,
-  onChange,
-  options = [],
-  required = false,
-  className = 'form-select',
-  children,
-}) => {
   return (
     <select
-      id={id}
-      name={name || id}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className={className}
+      id={props.id}
+      name={props.name || props.id}
+      value={props.value}
+      onChange={props.onChange}
+      required={props.required || false}
+      className={props.className || 'form-select'}
     >
-      {options.length > 0
-        ? options.map((opt) => (
+      {opciones.length > 0
+        ? opciones.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
           ))
-        : children}
+        : props.children}
     </select>
   );
-};
+}
 
+export { Select };
 export default Select;

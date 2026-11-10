@@ -18,9 +18,7 @@ export const BlogPage = () => {
               <small className="text-muted">{entrada.fecha}</small>
               <Title level={2} className="fs-5 fw-bold">{entrada.titulo}</Title>
               <p className="text-muted flex-grow-1">{entrada.resumen}</p>
-              <Boton variant="outline-danger" className="align-self-start" onClick={() => navigate(`/blog/${entrada.id}`)}>
-                Leer más
-              </Boton>
+              <Boton texto="Leer más" variante="outline-danger" className="align-self-start" onClick={() => navigate(`/blog/${entrada.id}`)} />
             </article>
           </div>
         ))}

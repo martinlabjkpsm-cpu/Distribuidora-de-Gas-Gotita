@@ -150,22 +150,23 @@ export const AdminPage = () => {
         <div className="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2" role="alert">
           <span>¿Seguro que quieres eliminar <strong>{porEliminar.texto}</strong>?</span>
           <div className="d-flex gap-2">
-            <Boton variant="danger" className="btn-sm" onClick={confirmarEliminacion}>Sí, eliminar</Boton>
-            <Boton variant="outline-secondary" className="btn-sm" onClick={() => setPorEliminar(null)}>Cancelar</Boton>
+            <Boton texto="Sí, eliminar" variante="danger" tamano="sm" onClick={confirmarEliminacion} />
+            <Boton texto="Cancelar" variante="outline-secondary" tamano="sm" onClick={() => setPorEliminar(null)} />
           </div>
         </div>
       )}
 
       {/* Pestañas: en celular se ordenan en varias filas (flex-wrap) */}
-      <ul className="nav nav-pills flex-wrap gap-1 mb-4">
+      <div className="d-flex flex-wrap gap-2 mb-4">
         {pestanas.map((p) => (
-          <li className="nav-item" key={p.id}>
-            <button type="button" className={`nav-link ${pestana === p.id ? 'active' : ''}`} onClick={() => cambiarPestana(p.id)}>
-              {p.texto}
-            </button>
-          </li>
+          <Boton
+            key={p.id}
+            texto={p.texto}
+            variante={pestana === p.id ? 'danger' : 'outline-danger'}
+            onClick={() => cambiarPestana(p.id)}
+          />
         ))}
-      </ul>
+      </div>
 
       {pestana === 'RESUMEN' && (
         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
@@ -204,8 +205,8 @@ export const AdminPage = () => {
                         <td className="small">{p.clienteNombre}</td>
                         <td className="small">{formatearFecha(p.fecha)}</td>
                         <td className="small">{formatearMoneda(p.total)}</td>
-                        <td><Etiqueta variant={p.estado} /></td>
-                        <td><Boton variant="outline-danger" className="btn-sm" onClick={() => setPedidoVer(p)}>Comprobante</Boton></td>
+                        <td><Etiqueta estado={p.estado} /></td>
+                        <td><Boton texto="Comprobante" variante="outline-danger" tamano="sm" onClick={() => setPedidoVer(p)} /></td>
                       </tr>
                     ))
                   )}
@@ -270,8 +271,8 @@ export const AdminPage = () => {
                 placeholder="Nombre de la categoría"
               />
               <div className="d-flex gap-2 mt-3">
-                <Boton type="submit" variant="primary">{categoriaEditar ? 'Guardar' : 'Crear'}</Boton>
-                {categoriaEditar && <Boton variant="outline-secondary" onClick={() => setCategoriaEditar(null)}>Cancelar</Boton>}
+                <Boton texto={categoriaEditar ? 'Guardar' : 'Crear'} type="submit" variante="primary" />
+                {categoriaEditar && <Boton texto="Cancelar" variante="outline-secondary" onClick={() => setCategoriaEditar(null)} />}
               </div>
             </form>
           </div>
@@ -281,8 +282,8 @@ export const AdminPage = () => {
                 <li key={cat} className="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
                   <span>{cat} <small className="text-muted">({productos.filter((p) => p.categoria === cat).length} productos)</small></span>
                   <div className="d-flex gap-1">
-                    <Boton variant="outline-primary" className="btn-sm" onClick={() => { setCategoriaEditar(cat); setNombreCategoria(cat); }}>Editar</Boton>
-                    <Boton variant="outline-danger" className="btn-sm" onClick={() => setPorEliminar({ tipo: 'categoria', id: cat, texto: cat })}>Eliminar</Boton>
+                    <Boton texto="Editar" variante="outline-primary" tamano="sm" onClick={() => { setCategoriaEditar(cat); setNombreCategoria(cat); }} />
+                    <Boton texto="Eliminar" variante="outline-danger" tamano="sm" onClick={() => setPorEliminar({ tipo: 'categoria', id: cat, texto: cat })} />
                   </div>
                 </li>
               ))}
@@ -308,7 +309,7 @@ export const AdminPage = () => {
             <div className="card p-3 shadow-sm">
               <div className="d-flex flex-wrap gap-1 mb-3">
                 {['TODOS', 'ADMINISTRADOR', 'OPERADOR', 'REPARTIDOR', 'CLIENTE'].map((r) => (
-                  <Boton key={r} variant={filtroRol === r ? 'dark' : 'outline-dark'} className="btn-sm" onClick={() => setFiltroRol(r)}>{r}</Boton>
+                  <Boton texto={r} key={r} variante={filtroRol === r ? 'dark' : 'outline-dark'} tamano="sm" onClick={() => setFiltroRol(r)} />
                 ))}
               </div>
               <TablaUsuarios

@@ -72,8 +72,8 @@ export const FormularioUsuario = ({ usuarioEditar = null, errorGeneral = '', onE
         onChange={manejarCambio} options={opcionesRoles} />
 
       <div className="d-flex flex-wrap gap-2">
-        <Boton type="submit" variant="primary">{esEdicion ? 'Guardar cambios' : 'Guardar usuario'}</Boton>
-        {esEdicion && <Boton variant="outline-secondary" onClick={onCancelar}>Cancelar</Boton>}
+        <Boton texto={esEdicion ? 'Guardar cambios' : 'Guardar usuario'} type="submit" variante="primary" />
+        {esEdicion && <Boton texto="Cancelar" variante="outline-secondary" onClick={onCancelar} />}
       </div>
     </form>
   );

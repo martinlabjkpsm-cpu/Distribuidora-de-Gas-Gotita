@@ -3,19 +3,17 @@ import { Title, Imagen, Boton } from '../Atoms';
 import { formatearMoneda } from '../../utils/formato';
 
 // Molécula: tarjeta de un producto del catálogo.
-// Recibe todo por props y avisa al padre con onAgregar / onVerDetalle.
-export const TarjetaProducto = ({
-  producto,
-  nombre = producto?.nombre ?? producto?.producto,
-  descripcion = producto?.descripcion,
-  categoria = producto?.categoria,
-  imagenSrc = producto?.imagenSrc,
-  precio = producto?.precioResidencial ?? producto?.precio,
-  stock = producto?.stockActual,
-  etiquetaTarifa = 'RESIDENCIAL',
-  onAgregar,
-  onVerDetalle,
-}) => {
+// Recibe todo por props y avisa al padre con props.onAgregar / props.onVerDetalle.
+// Puede recibir el objeto completo (props.producto) o cada dato por separado (props.nombre, props.precio...).
+function TarjetaProducto(props) {
+  const producto = props.producto || {};
+  const nombre = props.nombre ?? producto.nombre ?? producto.producto;
+  const descripcion = props.descripcion ?? producto.descripcion;
+  const categoria = props.categoria ?? producto.categoria;
+  const imagenSrc = props.imagenSrc ?? producto.imagenSrc;
+  const precio = props.precio ?? producto.precioResidencial ?? producto.precio;
+  const stock = props.stock ?? producto.stockActual;
+  const etiquetaTarifa = props.etiquetaTarifa || 'RESIDENCIAL';
   const sinStock = stock === 0;
 
   return (
@@ -33,9 +31,7 @@ export const TarjetaProducto = ({
           <span className="badge bg-secondary mb-2 align-self-start">{categoria}</span>
         )}
 
-        <Title level={3} className="fs-5 fw-bold mb-1 text-dark">
-          {nombre}
-        </Title>
+        <Title level={3} className="fs-5 fw-bold mb-1 text-dark" texto={nombre} />
 
         <p className="small text-muted mb-3 flex-grow-1">{descripcion || ''}</p>
 
@@ -46,19 +42,17 @@ export const TarjetaProducto = ({
           </div>
 
           <div className="d-flex gap-2">
-            {onVerDetalle && (
-              <Boton variant="outline-secondary" className="btn-sm" onClick={onVerDetalle}>
-                Ver detalle
-              </Boton>
+            {props.onVerDetalle && (
+              <Boton texto="Ver detalle" variante="outline-secondary" tamano="sm" onClick={props.onVerDetalle} />
             )}
             <Boton
-              variant="primary"
-              className="btn-sm fw-bold px-3"
-              onClick={onAgregar}
+              texto="+ Agregar"
+              variante="primary"
+              tamano="sm"
+              className="fw-bold px-3"
+              onClick={props.onAgregar}
               disabled={sinStock}
-            >
-              + Agregar
-            </Boton>
+            />
           </div>
         </div>
 
@@ -70,6 +64,7 @@ export const TarjetaProducto = ({
       </div>
     </div>
   );
-};
+}
 
+export { TarjetaProducto };
 export default TarjetaProducto;

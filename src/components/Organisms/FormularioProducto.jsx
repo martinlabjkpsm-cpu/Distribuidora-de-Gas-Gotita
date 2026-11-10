@@ -102,9 +102,9 @@ export const FormularioProducto = ({ productoEditar = null, categorias = [], err
         placeholder="/img/gas11kg.jpeg" value={datos.imagenSrc} onChange={manejarCambio} />
 
       <div className="d-flex flex-wrap gap-2">
-        <Boton type="submit" variant="primary">{esEdicion ? 'Guardar cambios' : 'Crear producto'}</Boton>
+        <Boton texto={esEdicion ? 'Guardar cambios' : 'Crear producto'} type="submit" variante="primary" />
         {esEdicion && (
-          <Boton variant="outline-secondary" onClick={onCancelar}>Cancelar</Boton>
+          <Boton texto="Cancelar" variante="outline-secondary" onClick={onCancelar} />
         )}
       </div>
     </form>

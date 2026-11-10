@@ -1,20 +1,21 @@
-import React from 'react';
-
 // Átomo: enlace real (<a href>) que NO conoce el router.
-// Al hacer clic cancela la recarga (preventDefault) y avisa con onNavegar(ruta).
+// Al hacer clic cancela la recarga (preventDefault) y avisa con props.onNavegar(ruta).
 // Quien crea "navigate" es la plantilla o la página, y lo pasa por props.
-export const LinkNav = ({ to = '/', onNavegar, onClick, children, className = '' }) => {
-  const manejarClic = (e) => {
+function LinkNav(props) {
+  const destino = props.to || '/';
+
+  function manejarClic(e) {
     e.preventDefault();
-    if (onClick) onClick(e);
-    if (onNavegar) onNavegar(to);
-  };
+    if (props.onClick) props.onClick(e);
+    if (props.onNavegar) props.onNavegar(destino);
+  }
 
   return (
-    <a href={to} onClick={manejarClic} className={className}>
-      {children}
+    <a href={destino} onClick={manejarClic} className={props.className}>
+      {props.texto ?? props.children}
     </a>
   );
-};
+}
 
+export { LinkNav };
 export default LinkNav;

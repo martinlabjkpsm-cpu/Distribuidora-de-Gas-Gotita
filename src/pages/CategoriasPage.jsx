@@ -20,9 +20,7 @@ export const CategoriasPage = () => {
               <div className="card h-100 shadow-sm border-0 p-3 text-center">
                 <Title level={2} className="fs-5 fw-bold">{cat}</Title>
                 <p className="text-muted small">{cantidad} productos</p>
-                <Boton variant="outline-danger" className="mt-auto" onClick={() => navigate(`/categoria/${encodeURIComponent(cat)}`)}>
-                  Ver productos
-                </Boton>
+                <Boton texto="Ver productos" variante="outline-danger" className="mt-auto" onClick={() => navigate(`/categoria/${encodeURIComponent(cat)}`)} />
               </div>
             </div>
           );

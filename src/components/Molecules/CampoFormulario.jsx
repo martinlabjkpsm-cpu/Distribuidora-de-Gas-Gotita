@@ -2,75 +2,61 @@ import React from 'react';
 import { Label, Input, Select, Textarea } from '../Atoms';
 
 // Molécula: etiqueta + caja (input, select o textarea) + mensaje de error.
-// No guarda el texto ni valida: muestra el valor que le entregan y avisa con onChange.
-export const CampoFormulario = ({
-  id,
-  name,
-  label,
-  type = 'text',
-  value,
-  onChange,
-  placeholder = '',
-  required = false,
-  disabled = false,
-  options = [],
-  rows,
-  className = '',
-  error,
-}) => {
-  const claseInvalida = error ? 'is-invalid' : '';
+// No guarda el texto ni valida: muestra el valor que le entregan por props y avisa con onChange.
+function CampoFormulario(props) {
+  const claseInvalida = props.error ? 'is-invalid' : '';
+  const opciones = props.options || [];
 
   let control;
-  if (rows) {
+  if (props.rows) {
     control = (
       <Textarea
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        rows={rows}
+        id={props.id}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+        required={props.required}
+        rows={props.rows}
         className={`form-control ${claseInvalida}`}
       />
     );
-  } else if (options.length > 0) {
+  } else if (opciones.length > 0) {
     control = (
       <Select
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        options={options}
-        required={required}
+        id={props.id}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        options={opciones}
+        required={props.required}
         className={`form-select ${claseInvalida}`}
       />
     );
   } else {
     control = (
       <Input
-        id={id}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        disabled={disabled}
+        id={props.id}
+        name={props.name}
+        type={props.type || 'text'}
+        value={props.value}
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+        required={props.required}
+        disabled={props.disabled}
         className={`form-control ${claseInvalida}`}
       />
     );
   }
 
   return (
-    <div className={`mb-3 ${className}`.trim()}>
-      <Label htmlFor={id} className="fw-semibold small">
-        {label}
-      </Label>
+    <div className={`mb-3 ${props.className || ''}`.trim()}>
+      <Label htmlFor={props.id} className="fw-semibold small" texto={props.label} />
       {control}
-      {error && <div className="invalid-feedback">{error}</div>}
+      {props.error && <div className="invalid-feedback">{props.error}</div>}
     </div>
   );
-};
+}
 
+export { CampoFormulario };
 export default CampoFormulario;

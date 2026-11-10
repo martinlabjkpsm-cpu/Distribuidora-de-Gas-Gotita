@@ -66,13 +66,12 @@ export const ClientePage = () => {
             <span className="small fw-bold">Categoría:</span>
             {['TODAS', ...categorias].map((cat) => (
               <Boton
+                texto={cat === 'TODAS' ? 'Todas' : cat}
                 key={cat}
-                variant={categoria === cat ? 'dark' : 'outline-dark'}
-                className="btn-sm"
+                variante={categoria === cat ? 'dark' : 'outline-dark'}
+                tamano="sm"
                 onClick={() => setCategoria(cat)}
-              >
-                {cat === 'TODAS' ? 'Todas' : cat}
-              </Boton>
+              />
             ))}
           </div>
 

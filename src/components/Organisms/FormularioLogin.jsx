@@ -57,9 +57,7 @@ export const FormularioLogin = ({ onEnviar, errorGeneral = '' }) => {
         error={errores.password}
       />
 
-      <Boton type="submit" variant="danger" fullWidth className="fw-bold">
-        Ingresar al sistema
-      </Boton>
+      <Boton texto="Ingresar al sistema" type="submit" variante="danger" anchoCompleto className="fw-bold" />
     </form>
   );
 };

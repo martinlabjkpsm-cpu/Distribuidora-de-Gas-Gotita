@@ -43,7 +43,7 @@ export const FormularioContacto = ({ onEnviar }) => {
         onChange={manejarCambio} error={errores.email} />
       <CampoFormulario id="contacto-mensaje" name="mensaje" label="Mensaje" rows={4} value={datos.mensaje}
         onChange={manejarCambio} error={errores.mensaje} />
-      <Boton type="submit" variant="danger">Enviar mensaje</Boton>
+      <Boton texto="Enviar mensaje" type="submit" variante="danger" />
     </form>
   );
 };

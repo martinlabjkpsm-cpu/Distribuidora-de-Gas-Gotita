@@ -1,27 +1,18 @@
-import React from 'react';
+// Átomo: área de texto controlada.
+function Textarea(props) {
+  return (
+    <textarea
+      id={props.id}
+      name={props.name || props.id}
+      value={props.value}
+      onChange={props.onChange}
+      placeholder={props.placeholder || ''}
+      rows={props.rows || 3}
+      required={props.required || false}
+      className={props.className || 'form-control'}
+    />
+  );
+}
 
-export const Textarea = ({ 
-  id, 
-  name, 
-  value, 
-  onChange, 
-  placeholder = '', 
-  rows = 3, 
-  required = false, 
-  className = 'form-control', 
-}) => { 
-  return ( 
-    <textarea 
-      id={id} 
-      name={name || id} 
-      value={value} 
-      onChange={onChange} 
-      placeholder={placeholder} 
-      rows={rows} 
-      required={required} 
-      className={className} 
-    /> 
-  ); 
-}; 
-
+export { Textarea };
 export default Textarea;

@@ -54,9 +54,13 @@ export const EncabezadoPrincipal = ({
 
           <div className="d-flex flex-wrap align-items-center gap-2 pb-2 pb-lg-0">
             {(!usuario || esCliente) && (
-              <Boton variant="light" className="btn-sm fw-bold text-danger" onClick={() => onNavegar('/cliente')}>
-                🛒 Carrito ({cantidadCarrito})
-              </Boton>
+              <Boton
+                texto={`🛒 Carrito (${cantidadCarrito})`}
+                variante="light"
+                tamano="sm"
+                className="fw-bold text-danger"
+                onClick={() => onNavegar('/cliente')}
+              />
             )}
 
             {usuario ? (
@@ -65,25 +69,15 @@ export const EncabezadoPrincipal = ({
                   Hola, <strong>{usuario.nombre}</strong>
                 </span>
                 {esCliente && (
-                  <Boton variant="outline-light" className="btn-sm" onClick={() => onNavegar('/mis-pedidos')}>
-                    Mis pedidos
-                  </Boton>
+                  <Boton texto="Mis pedidos" variante="outline-light" tamano="sm" onClick={() => onNavegar('/mis-pedidos')} />
                 )}
-                <Boton variant="outline-light" className="btn-sm" onClick={() => onNavegar(rutaPortal(usuario.rol))}>
-                  Mi portal
-                </Boton>
-                <Boton variant="outline-light" className="btn-sm" onClick={onLogout}>
-                  Cerrar sesión
-                </Boton>
+                <Boton texto="Mi portal" variante="outline-light" tamano="sm" onClick={() => onNavegar(rutaPortal(usuario.rol))} />
+                <Boton texto="Cerrar sesión" variante="outline-light" tamano="sm" onClick={onLogout} />
               </>
             ) : (
               <>
-                <Boton variant="outline-light" className="btn-sm" onClick={() => onNavegar('/login')}>
-                  Iniciar sesión
-                </Boton>
-                <Boton variant="light" className="btn-sm text-danger" onClick={() => onNavegar('/registro')}>
-                  Registrarse
-                </Boton>
+                <Boton texto="Iniciar sesión" variante="outline-light" tamano="sm" onClick={() => onNavegar('/login')} />
+                <Boton texto="Registrarse" variante="light" tamano="sm" className="text-danger" onClick={() => onNavegar('/registro')} />
               </>
             )}
           </div>

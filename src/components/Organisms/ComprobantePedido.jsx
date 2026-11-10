@@ -10,7 +10,7 @@ export const ComprobantePedido = ({ pedido }) => {
     <div className="card shadow-sm border-success">
       <div className="card-header bg-success text-white d-flex flex-wrap justify-content-between align-items-center gap-2">
         <strong>Pedido #{pedido.id}</strong>
-        <Etiqueta variant={pedido.estado} />
+        <Etiqueta estado={pedido.estado} />
       </div>
       <div className="card-body">
         <div className="row g-3">

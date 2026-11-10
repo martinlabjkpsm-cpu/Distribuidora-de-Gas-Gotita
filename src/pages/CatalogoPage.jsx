@@ -55,18 +55,15 @@ export const CatalogoPage = () => {
           />
         </div>
         <div className="col-12 col-md-6 d-flex flex-wrap gap-2 justify-content-md-end">
-          <Boton variant={!params.nombre ? 'dark' : 'outline-dark'} className="btn-sm" onClick={() => navigate('/catalogo')}>
-            Todos
-          </Boton>
+          <Boton texto="Todos" variante={!params.nombre ? 'dark' : 'outline-dark'} tamano="sm" onClick={() => navigate('/catalogo')} />
           {categorias.map((cat) => (
             <Boton
+              texto={cat}
               key={cat}
-              variant={params.nombre === cat ? 'dark' : 'outline-dark'}
-              className="btn-sm"
+              variante={params.nombre === cat ? 'dark' : 'outline-dark'}
+              tamano="sm"
               onClick={() => navigate(`/categoria/${encodeURIComponent(cat)}`)}
-            >
-              {cat}
-            </Boton>
+            />
           ))}
         </div>
       </div>
@@ -74,9 +71,7 @@ export const CatalogoPage = () => {
       {aviso && (
         <div className="alert alert-success d-flex flex-wrap justify-content-between align-items-center gap-2" role="status">
           <span>{aviso}</span>
-          <Boton variant="success" className="btn-sm" onClick={() => navigate('/cliente')}>
-            Ir a confirmar pedido
-          </Boton>
+          <Boton texto="Ir a confirmar pedido" variante="success" tamano="sm" onClick={() => navigate('/cliente')} />
         </div>
       )}
 

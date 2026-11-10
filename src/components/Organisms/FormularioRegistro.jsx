@@ -68,9 +68,7 @@ export const FormularioRegistro = ({ onEnviar, errorGeneral = '' }) => {
       <CampoFormulario id="reg-confirmacion" name="confirmacion" type="password" label="Repite la contraseña"
         value={datos.confirmacion} onChange={manejarCambio} error={errores.confirmacion} />
 
-      <Boton type="submit" variant="success" fullWidth className="fw-bold">
-        Crear mi cuenta
-      </Boton>
+      <Boton texto="Crear mi cuenta" type="submit" variante="success" anchoCompleto className="fw-bold" />
     </form>
   );
 };

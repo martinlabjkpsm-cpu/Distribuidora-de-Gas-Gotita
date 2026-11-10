@@ -1,6 +1,5 @@
-import React from 'react';
-
-// Átomo: etiqueta de estado de un pedido (badge de Bootstrap con el color de cada estado).
+// Átomo: etiqueta (badge) con el color de cada estado de pedido.
+// Recibe el estado por props: <Etiqueta estado="PENDIENTE" />
 const coloresPorEstado = {
   PENDIENTE: 'bg-warning text-dark',
   'EN CAMINO': 'bg-info text-dark',
@@ -8,9 +7,13 @@ const coloresPorEstado = {
   CANCELADO: 'bg-danger',
 };
 
-export const Etiqueta = ({ variant = 'PENDIENTE', children, className = '' }) => {
-  const color = coloresPorEstado[String(variant).toUpperCase()] || 'bg-secondary';
-  return <span className={`badge ${color} ${className}`.trim()}>{children ?? variant}</span>;
-};
+function Etiqueta(props) {
+  const estado = props.estado || 'PENDIENTE';
+  const color = coloresPorEstado[String(estado).toUpperCase()] || 'bg-secondary';
+  const clases = `badge ${color} ${props.className || ''}`.trim();
 
+  return <span className={clases}>{props.texto ?? props.children ?? estado}</span>;
+}
+
+export { Etiqueta };
 export default Etiqueta;

@@ -43,14 +43,12 @@ export const TablaUsuarios = ({ usuarios = [], onEditar, onCambiarActivo, onElim
                 </td>
                 <td>
                   <div className="d-flex flex-wrap gap-1">
-                    <Boton variant="outline-primary" className="btn-sm" onClick={() => onEditar(u)}>Editar</Boton>
-                    <Boton variant="outline-warning" className="btn-sm" onClick={() => onCambiarActivo(u.rut)}>
-                      {u.activo === false ? 'Activar' : 'Desactivar'}
-                    </Boton>
+                    <Boton texto="Editar" variante="outline-primary" tamano="sm" onClick={() => onEditar(u)} />
+                    <Boton texto={u.activo === false ? 'Activar' : 'Desactivar'} variante="outline-warning" tamano="sm" onClick={() => onCambiarActivo(u.rut)} />
                     {u.rol === 'CLIENTE' && (
-                      <Boton variant="outline-dark" className="btn-sm" onClick={() => onVerHistorial(u)}>Historial</Boton>
+                      <Boton texto="Historial" variante="outline-dark" tamano="sm" onClick={() => onVerHistorial(u)} />
                     )}
-                    <Boton variant="outline-danger" className="btn-sm" onClick={() => onEliminar(u)}>Eliminar</Boton>
+                    <Boton texto="Eliminar" variante="outline-danger" tamano="sm" onClick={() => onEliminar(u)} />
                   </div>
                 </td>
               </tr>

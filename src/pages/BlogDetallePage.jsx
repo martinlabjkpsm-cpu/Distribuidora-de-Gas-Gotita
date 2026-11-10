@@ -15,7 +15,7 @@ export const BlogDetallePage = () => {
   if (!entrada) {
     return (
       <MainLayoutTemplate tituloHeader="Entrada no encontrada">
-        <Boton variant="danger" onClick={() => navigate('/blog')}>Volver al blog</Boton>
+        <Boton texto="Volver al blog" variante="danger" onClick={() => navigate('/blog')} />
       </MainLayoutTemplate>
     );
   }
@@ -28,7 +28,7 @@ export const BlogDetallePage = () => {
           <p key={parrafo}>{parrafo}</p>
         ))}
       </article>
-      <Boton variant="outline-secondary" onClick={() => navigate('/blog')}>← Volver al blog</Boton>
+      <Boton texto="← Volver al blog" variante="outline-secondary" onClick={() => navigate('/blog')} />
     </MainLayoutTemplate>
   );
 };

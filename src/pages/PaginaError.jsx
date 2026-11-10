@@ -21,8 +21,8 @@ export const PaginaError = ({ tipo = '404' }) => {
             : 'La página que buscas no existe.'}
         </p>
         <div className="d-flex flex-wrap justify-content-center gap-2">
-          <Boton variant="danger" onClick={() => navigate('/')}>Ir al inicio</Boton>
-          {esError403 && <Boton variant="outline-secondary" onClick={() => navigate('/login')}>Iniciar sesión con otra cuenta</Boton>}
+          <Boton texto="Ir al inicio" variante="danger" onClick={() => navigate('/')} />
+          {esError403 && <Boton texto="Iniciar sesión con otra cuenta" variante="outline-secondary" onClick={() => navigate('/login')} />}
         </div>
       </div>
     </div>

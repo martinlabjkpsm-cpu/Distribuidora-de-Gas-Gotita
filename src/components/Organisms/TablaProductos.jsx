@@ -39,10 +39,10 @@ export const TablaProductos = ({ productos = [], onEditar, onEliminar }) => {
                 <td>
                   <div className="d-flex flex-wrap gap-1">
                     {onEditar && (
-                      <Boton variant="outline-primary" className="btn-sm" onClick={() => onEditar(p)}>Editar</Boton>
+                      <Boton texto="Editar" variante="outline-primary" tamano="sm" onClick={() => onEditar(p)} />
                     )}
                     {onEliminar && (
-                      <Boton variant="outline-danger" className="btn-sm" onClick={() => onEliminar(p)}>Eliminar</Boton>
+                      <Boton texto="Eliminar" variante="outline-danger" tamano="sm" onClick={() => onEliminar(p)} />
                     )}
                   </div>
                 </td>

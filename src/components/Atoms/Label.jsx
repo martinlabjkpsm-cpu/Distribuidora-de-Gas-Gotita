@@ -1,11 +1,11 @@
-import React from 'react';
+// Átomo: etiqueta de un campo de formulario.
+function Label(props) {
+  return (
+    <label htmlFor={props.htmlFor} className={`form-label ${props.className || ''}`.trim()}>
+      {props.texto ?? props.children}
+    </label>
+  );
+}
 
-export const Label = ({ htmlFor, children, className = '' }) => { 
-  return ( 
-    <label htmlFor={htmlFor} className={`form-label ${className}`}> 
-      {children} 
-    </label> 
-  ); 
-}; 
-
+export { Label };
 export default Label;

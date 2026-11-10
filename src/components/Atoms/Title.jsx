@@ -1,8 +1,11 @@
-import React from 'react';
+// Átomo: título h1...h6 según props.level.
+function Title(props) {
+  const nivel = props.level || 1;
+  const Tag = `h${nivel}`;
+  const clases = `title title-h${nivel} ${props.className || ''}`.trim();
 
-export const Title = ({ level = 1, children, className = '' }) => { 
-  const Tag = `h${level}`; 
-  return <Tag className={`title title-h${level} ${className}`}>{children}</Tag>; 
-}; 
+  return <Tag className={clases}>{props.texto ?? props.children}</Tag>;
+}
 
+export { Title };
 export default Title;

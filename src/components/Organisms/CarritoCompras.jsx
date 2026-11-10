@@ -21,7 +21,7 @@ export const CarritoCompras = ({
       <div className="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
         <Title level={2} className="fs-5 m-0">🛒 Tu carrito</Title>
         {items.length > 0 && (
-          <Boton variant="outline-danger" className="btn-sm" onClick={onVaciar}>Vaciar</Boton>
+          <Boton texto="Vaciar" variante="outline-danger" tamano="sm" onClick={onVaciar} />
         )}
       </div>
 
@@ -30,12 +30,11 @@ export const CarritoCompras = ({
         <div className="btn-group btn-group-sm" role="group" aria-label="Tipo de tarifa">
           {['RESIDENCIAL', 'COMERCIAL'].map((tipo) => (
             <Boton
+              texto={tipo === 'RESIDENCIAL' ? 'Residencial' : 'Comercial'}
               key={tipo}
-              variant={tipoTarifa === tipo ? 'danger' : 'outline-danger'}
+              variante={tipoTarifa === tipo ? 'danger' : 'outline-danger'}
               onClick={() => onCambiarTarifa(tipo)}
-            >
-              {tipo === 'RESIDENCIAL' ? 'Residencial' : 'Comercial'}
-            </Boton>
+            />
           ))}
         </div>
       </div>
