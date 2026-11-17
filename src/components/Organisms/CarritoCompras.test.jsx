@@ -30,8 +30,8 @@ describe('<CarritoCompras />', () => {
     const mocks = acciones();
     render(<CarritoCompras items={items} tipoTarifa="RESIDENCIAL" {...mocks} />);
 
-    await userEvent.click(screen.getByRole('button', { name: '+' }));
-    await userEvent.click(screen.getByRole('button', { name: '-' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Sumar uno' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Restar uno' }));
     await userEvent.click(screen.getByRole('button', { name: 'Comercial' }));
 
     expect(mocks.onSumar).toHaveBeenCalledWith(items[0]);
