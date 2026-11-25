@@ -1,41 +1,62 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { leerSesion, guardarSesion, borrarSesion } from '../services/sesion';
+import { obtenerPerfil } from '../services/authService';
 
+// Contexto de sesión: quién está conectado, su token y cuándo vence.
 const AuthContext = createContext({
   usuario: null,
   cargando: true,
   login: () => {},
-  logout: () => {}
+  logout: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
 
-  useEffect(() => {
-    try {
-      const guardado = localStorage.getItem('usuario_gas_el_volcan');
-      if (guardado && guardado !== 'undefined' && guardado !== 'null') {
-        const datos = JSON.parse(guardado);
-        if (datos && typeof datos === 'object') {
-          setUsuario(datos);
-        }
-      }
-    } catch (e) {
-      localStorage.removeItem('usuario_gas_el_volcan');
-    } finally {
-      setCargando(false);
-    }
+  const logout = useCallback(() => {
+    borrarSesion();
+    setUsuario(null);
   }, []);
 
-  const login = (datosUsuario) => {
-    if (!datosUsuario) return;
-    setUsuario(datosUsuario);
-    localStorage.setItem('usuario_gas_el_volcan', JSON.stringify(datosUsuario));
-  };
+  // Al recargar la página: recupera la sesión de sessionStorage (si no venció)
+  // y la confirma con GET /auth/me (si el backend la rechaza, se cierra).
+  useEffect(() => {
+    const sesion = leerSesion();
+    if (!sesion) {
+      setCargando(false);
+      return;
+    }
+    setUsuario(sesion.usuario);
+    obtenerPerfil()
+      .then((perfil) => {
+        setUsuario(perfil);
+        guardarSesion({ ...sesion, usuario: perfil });
+      })
+      .catch((error) => {
+        if (error.response?.status === 401) logout();
+      })
+      .finally(() => setCargando(false));
+  }, [logout]);
 
-  const logout = () => {
-    setUsuario(null);
-    localStorage.removeItem('usuario_gas_el_volcan');
+  // Cierra la sesión justo cuando vence el token.
+  useEffect(() => {
+    const sesion = leerSesion();
+    if (!usuario || !sesion) return undefined;
+    const temporizador = setTimeout(logout, sesion.expiraEn - Date.now());
+    return () => clearTimeout(temporizador);
+  }, [usuario, logout]);
+
+  // El interceptor de Axios avisa cuando la API responde 401 (token vencido o inválido).
+  useEffect(() => {
+    window.addEventListener('sesion-expirada', logout);
+    return () => window.removeEventListener('sesion-expirada', logout);
+  }, [logout]);
+
+  // Recibe la sesión ya armada por el DTO de salida (token, usuario, expiraEn).
+  const login = (sesion) => {
+    guardarSesion(sesion);
+    setUsuario(sesion.usuario);
   };
 
   return (
@@ -45,17 +66,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    return {
-      usuario: null,
-      cargando: false,
-      login: () => {},
-      logout: () => {}
-    };
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;

@@ -6,15 +6,15 @@ import {
   validarNombreFormulario,
   validarEmailFormulario,
   validarPasswordFormulario,
+  validarTelefonoFormulario,
   validarConfirmacionClave,
   sinErrores,
 } from '../../utils/validaciones';
 
-const vacio = { rut: '', nombre: '', email: '', password: '', confirmacion: '' };
+const vacio = { rut: '', nombre: '', email: '', telefono: '', password: '', confirmacion: '' };
 
-// Organismo: formulario de registro de cliente, con validación hecha en React.
 // Valida TODOS los campos al enviar y muestra cada error junto a su campo (sin alert()).
-export const FormularioRegistro = ({ onEnviar, errorGeneral = '' }) => {
+export const FormularioRegistro = ({ onEnviar, errorGeneral = '', cargando = false }) => {
   const [datos, setDatos] = useState(vacio);
   const [errores, setErrores] = useState(vacio);
 
@@ -30,7 +30,8 @@ export const FormularioRegistro = ({ onEnviar, errorGeneral = '' }) => {
       rut: validarRutFormulario(datos.rut),
       nombre: validarNombreFormulario(datos.nombre, 'El nombre'),
       email: validarEmailFormulario(datos.email),
-      password: validarPasswordFormulario(datos.password),
+      telefono: validarTelefonoFormulario(datos.telefono),
+      password: validarPasswordFormulario(datos.password, 8),
       confirmacion: validarConfirmacionClave(datos.password, datos.confirmacion),
     };
     setErrores(nuevosErrores);
@@ -40,6 +41,7 @@ export const FormularioRegistro = ({ onEnviar, errorGeneral = '' }) => {
         rut: datos.rut.trim(),
         nombre: datos.nombre.trim(),
         email: datos.email.trim(),
+        telefono: datos.telefono.trim(),
         password: datos.password,
       });
     }
@@ -62,13 +64,16 @@ export const FormularioRegistro = ({ onEnviar, errorGeneral = '' }) => {
       <CampoFormulario id="reg-email" name="email" type="email" label="Correo electrónico"
         placeholder="ejemplo@correo.cl" value={datos.email} onChange={manejarCambio} error={errores.email} />
 
+      <CampoFormulario id="reg-telefono" name="telefono" label="Teléfono (opcional)" placeholder="+56912345678"
+        value={datos.telefono} onChange={manejarCambio} error={errores.telefono} />
+
       <CampoFormulario id="reg-password" name="password" type="password" label="Contraseña"
-        placeholder="Mínimo 6 caracteres" value={datos.password} onChange={manejarCambio} error={errores.password} />
+        placeholder="Mínimo 8 caracteres" value={datos.password} onChange={manejarCambio} error={errores.password} />
 
       <CampoFormulario id="reg-confirmacion" name="confirmacion" type="password" label="Repite la contraseña"
         value={datos.confirmacion} onChange={manejarCambio} error={errores.confirmacion} />
 
-      <Boton texto="Crear mi cuenta" type="submit" variante="success" anchoCompleto className="fw-bold" />
+      <Boton texto={cargando ? 'Creando cuenta...' : 'Crear mi cuenta'} type="submit" variante="success" anchoCompleto className="fw-bold" disabled={cargando} />
     </form>
   );
 };

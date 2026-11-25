@@ -64,10 +64,18 @@ export const validarRutFormulario = (entrada) => {
   return validarRut(String(entrada).trim()) ? '' : 'RUT no válido. Ejemplo: 12345678-9';
 };
 
-export const validarPasswordFormulario = (password) => {
+// El mínimo es configurable: login usa 6 (por defecto); registro y crear usuario usan 8 (igual que la API).
+export const validarPasswordFormulario = (password, minimo = 6) => {
   if (!validarRequerido(password)) return 'La contraseña es obligatoria';
-  if (!validarPassword(password, 6)) return 'La contraseña debe tener al menos 6 caracteres';
+  if (!validarPassword(password, minimo)) return `La contraseña debe tener al menos ${minimo} caracteres`;
   return '';
+};
+
+// Teléfono opcional: si viene, 8 a 12 dígitos con + inicial opcional (mismo patrón que la API).
+export const validarTelefonoFormulario = (telefono) => {
+  const limpio = String(telefono || '').trim();
+  if (!limpio) return '';
+  return /^\+?\d{8,12}$/.test(limpio) ? '' : 'El teléfono debe tener entre 8 y 12 dígitos (ej. +56912345678)';
 };
 
 export const validarCampoObligatorio = (valor, nombreCampo = 'Este campo') => {
