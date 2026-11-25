@@ -1,0 +1,15 @@
+[Unit]
+Description=Frontend Gas Gotita (React + Vite)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Proyecto-Distribuidora-de-Gas-Gotita
+Environment=PATH=/home/ubuntu/.nvm/versions/node/v24.22.3/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/ubuntu/.nvm/versions/node/v24.22.3/bin/npm run dev -- --host --port 5173 --strictPort
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
