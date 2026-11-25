@@ -3,17 +3,17 @@ import { Boton } from '../Atoms';
 import { CampoFormulario } from '../Molecules';
 import { validarRutFormulario, validarPasswordFormulario, sinErrores } from '../../utils/validaciones';
 
-// Organismo: formulario de inicio de sesión.
+
 // Es el dueño del estado (rut, clave y errores). Al enviar valida y,
 // solo si todo está bien, avisa a la página con onEnviar({ rut, password }).
-export const FormularioLogin = ({ onEnviar, errorGeneral = '' }) => {
+export const FormularioLogin = ({ onEnviar, errorGeneral = '', cargando = false }) => {
   const [datos, setDatos] = useState({ rut: '', password: '' });
   const [errores, setErrores] = useState({ rut: '', password: '' });
 
   const manejarCambio = (e) => {
     const { name, value } = e.target;
     setDatos({ ...datos, [name]: value });
-    setErrores({ ...errores, [name]: '' }); // al corregir, se borra el error de ese campo
+    setErrores({ ...errores, [name]: '' }); 
   };
 
   const manejarEnvio = (e) => {
@@ -57,7 +57,7 @@ export const FormularioLogin = ({ onEnviar, errorGeneral = '' }) => {
         error={errores.password}
       />
 
-      <Boton texto="Ingresar al sistema" type="submit" variante="danger" anchoCompleto className="fw-bold" />
+      <Boton texto={cargando ? 'Ingresando...' : 'Ingresar al sistema'} type="submit" variante="danger" anchoCompleto className="fw-bold" disabled={cargando} />
     </form>
   );
 };

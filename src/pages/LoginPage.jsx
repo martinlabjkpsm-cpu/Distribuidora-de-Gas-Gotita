@@ -4,7 +4,9 @@ import { AuthLayoutTemplate } from '../components/Templates/AuthLayoutTemplate';
 import { FormularioLogin } from '../components/Organisms/FormularioLogin';
 import { LinkNav } from '../components/Atoms';
 import { useAuth } from '../context/AuthContext';
-import { usuarioService } from '../services/usuarioService';
+import { iniciarSesion } from '../services/authService';
+import { obtenerMensajeError } from '../services/errores';
+import { crearLoginRequestDto, crearSesionDesdeLogin } from '../dto/auth.dto';
 import { useTituloPagina } from '../hooks/useTituloPagina';
 
 const rutaSegunRol = {
@@ -14,27 +16,33 @@ const rutaSegunRol = {
   CLIENTE: '/cliente',
 };
 
-// Página: inicio de sesión. El formulario valida; la página decide qué hacer
-// cuando los datos son correctos (buscar el usuario y navegar según su rol).
+// Página: inicio de sesión. El formulario valida; la página llama a la API (POST /auth/login),
+// guarda la sesión y navega según el rol que devolvió el servidor.
 export const LoginPage = () => {
   useTituloPagina('Iniciar sesión');
   const navigate = useNavigate();
   const { login } = useAuth();
   const [errorGeneral, setErrorGeneral] = useState('');
+  const [cargando, setCargando] = useState(false);
 
-  const ingresar = ({ rut, password }) => {
+  const ingresar = async (formulario) => {
+    setCargando(true);
+    setErrorGeneral('');
     try {
-      const usuario = usuarioService.autenticar(rut, password);
-      login(usuario);
-      navigate(rutaSegunRol[usuario.rol] || '/cliente');
+      const respuesta = await iniciarSesion(crearLoginRequestDto(formulario));
+      const sesion = crearSesionDesdeLogin(respuesta);
+      login(sesion);
+      navigate(rutaSegunRol[sesion.usuario.rol] || '/cliente');
     } catch (error) {
-      setErrorGeneral(error.message);
+      setErrorGeneral(obtenerMensajeError(error));
+    } finally {
+      setCargando(false);
     }
   };
 
   return (
     <AuthLayoutTemplate titulo="Iniciar sesión" subtitulo="Ingresa con tu RUT y contraseña">
-      <FormularioLogin onEnviar={ingresar} errorGeneral={errorGeneral} />
+      <FormularioLogin onEnviar={ingresar} errorGeneral={errorGeneral} cargando={cargando} />
 
       <div className="text-center mt-3 pt-3 border-top small d-flex flex-column gap-1">
         <span>

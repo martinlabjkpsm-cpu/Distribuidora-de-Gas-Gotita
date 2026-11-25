@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 coverage
 cobertura.tar.gz
+.env

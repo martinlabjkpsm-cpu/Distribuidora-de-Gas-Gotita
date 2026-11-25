@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MainLayoutTemplate } from '../components/Templates/MainLayoutTemplate';
 import { Title, Boton, Etiqueta, Input } from '../components/Atoms';
 import { TarjetaResumenCaja } from '../components/Molecules';
@@ -10,7 +10,8 @@ import { ComprobantePedido } from '../components/Organisms/ComprobantePedido';
 import { SeccionReporteCaja } from '../components/Organisms/SeccionReporteCaja';
 import { useProductos } from '../context/ProductosContext';
 import { useAuth } from '../context/AuthContext';
-import { usuarioService } from '../services/usuarioService';
+import { usuarioApiService } from '../services/usuarioApiService';
+import { obtenerMensajeError, obtenerErroresDeCampos } from '../services/errores';
 import { pedidoService } from '../services/pedidoService';
 import { formatearMoneda, formatearFecha } from '../utils/formato';
 import { esStockCritico } from '../utils/precios';
@@ -39,7 +40,12 @@ export const AdminPage = () => {
   } = useProductos();
 
   const [pestana, setPestana] = useState('RESUMEN');
-  const [usuarios, setUsuarios] = useState(() => usuarioService.getUsuarios());
+  // Usuarios desde la API: lista + estados de carga, error y guardado
+  const [usuarios, setUsuarios] = useState([]);
+  const [cargandoUsuarios, setCargandoUsuarios] = useState(true);
+  const [errorCargaUsuarios, setErrorCargaUsuarios] = useState('');
+  const [guardandoUsuario, setGuardandoUsuario] = useState(false);
+  const [erroresCamposUsuario, setErroresCamposUsuario] = useState({});
   const [pedidos, setPedidos] = useState(() => pedidoService.getPedidos());
   const [mensaje, setMensaje] = useState(null);
 
@@ -84,21 +90,65 @@ export const AdminPage = () => {
     }
   };
 
-  // ---------- Usuarios ----------
-  const guardarUsuario = (datos) => {
+  // ---------- Usuarios (API) ----------
+  // READ: GET /usuarios
+  const cargarUsuarios = useCallback(async () => {
+    setCargandoUsuarios(true);
+    setErrorCargaUsuarios('');
+    try {
+      setUsuarios(await usuarioApiService.listar());
+    } catch (error) {
+      setErrorCargaUsuarios(obtenerMensajeError(error));
+    } finally {
+      setCargandoUsuarios(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    cargarUsuarios();
+  }, [cargarUsuarios]);
+
+  // CREATE: POST /usuarios | UPDATE: PUT /usuarios/{id} (+ PATCH /usuarios/{id}/rol si cambió el rol)
+  // Devuelve true si salió bien, para que el formulario se limpie.
+  const guardarUsuario = async (datos) => {
+    setGuardandoUsuario(true);
+    setErrorUsuario('');
+    setErroresCamposUsuario({});
     try {
       if (usuarioEditar) {
-        setUsuarios(usuarioService.actualizarUsuario(usuarioEditar.rut, datos));
+        await usuarioApiService.actualizar(usuarioEditar.id, datos);
+        if (datos.rol !== usuarioEditar.rol) {
+          await usuarioApiService.cambiarRol(usuarioEditar.id, datos.rol);
+        }
         avisar(`Usuario ${datos.nombre} actualizado.`);
         setUsuarioEditar(null);
       } else {
-        usuarioService.crearUsuario(datos);
-        setUsuarios(usuarioService.getUsuarios());
-        avisar(`Usuario ${datos.nombre} creado como ${datos.rol}.`);
+        const creado = await usuarioApiService.crear(datos);
+        avisar(`Usuario ${creado.nombre} creado como ${creado.rol}.`);
       }
-      setErrorUsuario('');
+      await cargarUsuarios();
+      return true;
     } catch (error) {
-      setErrorUsuario(error.message);
+      setErrorUsuario(obtenerMensajeError(error));
+      setErroresCamposUsuario(obtenerErroresDeCampos(error));
+      if (usuarioEditar) await cargarUsuarios(); // por si el PUT pasó y falló solo el cambio de rol
+      return false;
+    } finally {
+      setGuardandoUsuario(false);
+    }
+  };
+
+  // UPDATE: PATCH /usuarios/{id}/activo
+  const cambiarActivoUsuario = async (u) => {
+    setGuardandoUsuario(true);
+    try {
+      const actualizado = await usuarioApiService.cambiarActivo(u.id, u.activo === false);
+      setUsuarios((lista) => lista.map((x) => (x.id === actualizado.id ? actualizado : x)));
+      avisar(`Cuenta de ${actualizado.nombre} ${actualizado.activo ? 'activada' : 'desactivada'}.`);
+    } catch (error) {
+      avisar(obtenerMensajeError(error), 'danger');
+    } finally {
+      setGuardandoUsuario(false);
     }
   };
 
@@ -121,14 +171,20 @@ export const AdminPage = () => {
   };
 
   // ---------- Eliminar con confirmación ----------
-  const confirmarEliminacion = () => {
+  const confirmarEliminacion = async () => {
     try {
       if (porEliminar.tipo === 'producto') eliminar(porEliminar.id);
-      if (porEliminar.tipo === 'usuario') setUsuarios(usuarioService.eliminarUsuario(porEliminar.id));
       if (porEliminar.tipo === 'categoria') eliminarCategoria(porEliminar.id);
-      avisar(`${porEliminar.texto} eliminado.`);
+      if (porEliminar.tipo === 'usuario') {
+        // DELETE /usuarios/{id} → 204. La API desactiva la cuenta para conservar sus pedidos.
+        await usuarioApiService.eliminar(porEliminar.id);
+        await cargarUsuarios();
+        avisar(`${porEliminar.texto} eliminado (cuenta desactivada).`);
+      } else {
+        avisar(`${porEliminar.texto} eliminado.`);
+      }
     } catch (error) {
-      avisar(error.message, 'danger');
+      avisar(obtenerMensajeError(error), 'danger');
     }
     setPorEliminar(null);
   };
@@ -148,7 +204,10 @@ export const AdminPage = () => {
 
       {porEliminar && (
         <div className="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2" role="alert">
-          <span>¿Seguro que quieres eliminar <strong>{porEliminar.texto}</strong>?</span>
+          <span>
+            ¿Seguro que quieres eliminar <strong>{porEliminar.texto}</strong>?
+            {porEliminar.tipo === 'usuario' && ' La cuenta quedará desactivada y se conservan sus pedidos.'}
+          </span>
           <div className="d-flex gap-2">
             <Boton texto="Sí, eliminar" variante="danger" tamano="sm" onClick={confirmarEliminacion} />
             <Boton texto="Cancelar" variante="outline-secondary" tamano="sm" onClick={() => setPorEliminar(null)} />
@@ -297,11 +356,13 @@ export const AdminPage = () => {
           <div className="col-12 col-lg-4">
             <div className="card p-3 shadow-sm">
               <FormularioUsuario
-                key={usuarioEditar?.rut || 'nuevo'}
+                key={usuarioEditar?.id || 'nuevo'}
                 usuarioEditar={usuarioEditar}
                 errorGeneral={errorUsuario}
+                erroresCampos={erroresCamposUsuario}
+                cargando={guardandoUsuario}
                 onEnviar={guardarUsuario}
-                onCancelar={() => setUsuarioEditar(null)}
+                onCancelar={() => { setUsuarioEditar(null); setErrorUsuario(''); setErroresCamposUsuario({}); }}
               />
             </div>
           </div>
@@ -312,13 +373,28 @@ export const AdminPage = () => {
                   <Boton texto={r} key={r} variante={filtroRol === r ? 'dark' : 'outline-dark'} tamano="sm" onClick={() => setFiltroRol(r)} />
                 ))}
               </div>
-              <TablaUsuarios
-                usuarios={usuariosFiltrados}
-                onEditar={(u) => { setUsuarioEditar(u); setErrorUsuario(''); }}
-                onCambiarActivo={(rut) => setUsuarios(usuarioService.cambiarActivo(rut))}
-                onEliminar={(u) => setPorEliminar({ tipo: 'usuario', id: u.rut, texto: u.nombre })}
-                onVerHistorial={(u) => { setFiltroCliente(u.rut); cambiarPestana('PEDIDOS'); }}
-              />
+              {cargandoUsuarios ? (
+                <div className="text-center py-4">
+                  <div className="spinner-border text-danger" role="status">
+                    <span className="visually-hidden">Cargando usuarios...</span>
+                  </div>
+                  <p className="text-muted small mt-2 mb-0">Cargando usuarios desde la API...</p>
+                </div>
+              ) : errorCargaUsuarios ? (
+                <div className="alert alert-danger d-flex flex-wrap justify-content-between align-items-center gap-2" role="alert">
+                  <span>{errorCargaUsuarios}</span>
+                  <Boton texto="Reintentar" variante="outline-danger" tamano="sm" onClick={cargarUsuarios} />
+                </div>
+              ) : (
+                <TablaUsuarios
+                  usuarios={usuariosFiltrados}
+                  ocupado={guardandoUsuario}
+                  onEditar={(u) => { setUsuarioEditar(u); setErrorUsuario(''); setErroresCamposUsuario({}); }}
+                  onCambiarActivo={cambiarActivoUsuario}
+                  onEliminar={(u) => setPorEliminar({ tipo: 'usuario', id: u.id, texto: u.nombre })}
+                  onVerHistorial={(u) => { setFiltroCliente(u.rut); cambiarPestana('PEDIDOS'); }}
+                />
+              )}
             </div>
           </div>
         </div>
